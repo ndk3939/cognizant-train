@@ -1,0 +1,39 @@
+#Enter the commands you want to show case
+
+ls
+gci 
+Get-ChildItem 
+#Gets the list of aliases using the cmdlet Get-Alias
+Get-alias -name Dir
+#It's a little more complex to list all aliases for a given cmdlet.
+Get-Alias | Where-Object {$_.Definition -eq "Get-ChildItem"}
+gal | Where definition -match "Get-ChildItem"
+
+Dir alias: | Out-String -Stream | Select-String "Get-ChildItem"
+#PowerShell pipeline works with conventional string, not objects
+
+#User-defined aliases only last while the PowerShell session is active
+Set-Alias gs Get-Service
+Gs
+Get-Date
+Get-Date -displayHint date
+mydate
+Set-Alias mydate Get-Date
+mydate
+mydate -displayHint date
+
+#Go ahead and export the “gs” alias using the “Export-Alias” cmdlet
+Export-Alias -Path Aliases.txt
+
+#Not only did it export the “gs” user-defined alias we created, it exported ALL PowerShell aliases.
+Import-Alias -Path Aliases.txt
+
+#By using the -Name parameter, you can export only the aliases you choose
+Export-Alias -Path Alias.txt -Name gs
+notepad Alias.txt
+#Import the Alias.txt file:
+Import-Alias -Path Alias.txt
+gs
+#Important to know: every time you call Export-Alias, the current file is overwritten.
+Export-Alias alias.txt mydate –append
+

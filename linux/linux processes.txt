@@ -1,0 +1,7 @@
+uptime -  the current load average
+lscpu - number of CPUs on a system
+kill, pkill, and killall commands use signals to control processes.
+ps - lists processes.
+top- gives all and bolds the running process
+jobs - displays processes within a terminal session
+display load average values, you can use the top, uptime, or w commands.
