@@ -1,0 +1,74 @@
+#Enter the commands you want to show case
+
+Get-Command |Where-Object { $_.Parameters.Keys -contains 'ComputerName' -and $_.Parameters.Keys -notcontains 'Session'} 
+
+#This command uses Get-WmiObject to access BIOS information on PC01:
+Get-WmiObject Win32_BIOS -ComputerName PC01
+
+#If Windows PowerShell returns an Access Denied error message, you can check whether the cmdlet supports the Credential parameter. If so, use it to log on to the target system as a different user:
+Get-WmiObject Win32_BIOS -ComputerName PC01 -Credential
+
+#as mentioned earlier, use of these cmdlets often requires opening holes in the firewall or starting specific services. By default, these types of cmdlets fail when run against remote machines that have not relaxed access rules. 
+
+# If you do not supply credentials, the remote session impersonates your current logon.
+Enter-PSSession -ComputerName dc1
+
+#When you have a single command to run, it does not make sense to go through all the trouble of building and entering an interactive, remote Windows PowerShell session. Instead of creating a remote Windows PowerShell console session, you can run a single command by using the Invoke-Command cmdlet.
+Invoke-Command -ComputerName ex1 -ScriptBlock {get-process | select -Last 1}
+
+#To shorten the amount of typing, you can use the icm alias for the Invoke-Command cmdlet. You can also rely upon positional parameters (the first parameter is the computer name and the second parameter is the script block). By using aliases and positional parameters, the previous command shortens considerably, as shown in the following example:
+
+icm ex1 {gps | select -l 1}
+
+#Running a single command against multiple computers
+$cn = "dc1","dc3","ex1","sql1","wsus1","wds1","hyperv1","hyperv2","hyperv3"
+$cred = Get-Credential iammred\administrator
+Invoke-Command -cn $cn -cred $cred -ScriptBlock {gwmi win32_bios}
+#or
+Invoke-Command -ComputerName Server-R2,Server-DC4,Server12 -Command { Get-EventLog Security -Newest 200 |  Where { $_.EventID -eq 1212 } } -credential domian\user
+
+#Guess What - -Command
+#The -Command parameter is actually an alias, or nickname, for the -ScriptBlock parameter 
+
+#By default, PowerShell talks with up to 32 computers at once. If you specify more than 32 computers, it will queue them up. Then, as one computer completes, the next one in line begins. If you have a really awesome network and powerful computers, you could raise that number by using the cmdlet's -ThrottleLimit parameter.
+
+# if your text file is named webservers.txt, you'd use the code
+
+Invoke-Command -Command { hostname } -ComputerName (Get-Content webservers.txt)
+
+#Querying computer names in Active Directory 
+Invoke-Command -Command { hostname } -ComputerName (Get-ADComputer -Filter * -SearchBase "ou=Sales,dc=company,dc=pri" |  Select-Object -Expand Name)
+
+#Get-Content produces simple strings of text, whereas Get-ADComputer produces computer objects. The -ComputerName parameter is expecting strings. If it were to receive computer objects, it wouldn't know what to do with them. So, if you want to use Get-ADComputer, you need to get the values from the computer objects' Name properties
+
+#Creating a persisted connection
+#If you anticipate making multiple connections to a remote system, use the New-PSSession cmdlet to create a remote Windows PowerShell session. The New-PSSession cmdlet permits you to store the remote session in a variable and provides you with the ability to enter and leave the remote session as often as required, without the additional overhead of creating and destroying remote sessions
+
+ $dc1 = New-PSSession -ComputerName dc1 -Credential iammred\administrator
+Enter-PSSession $dc1
+hostname
+exit
+
+Enter-PSSession $dc1
+gps | select -Last 1
+exit
+
+Get-PSSession
+Get-PSSession | Remove-PSSession
+
+# Invoke-Command cmdlet accepts a session parameter in the same manner as the Enter-PSSession cmdlet does
+
+$dc1 = New-PSSession -ComputerName dc1 -Credential iammred\administrator
+Invoke-Command -Session $dc1 -ScriptBlock {hostname}
+Invoke-Command -Session $dc1 -ScriptBlock {Get-EventLog application -Newest 1}
+Remove-PSSession $dc1
+
+# persisted connection to multiple computers
+$cred = Get-Credential -Credential iammred\administrator
+$cn = "ex1","dc3"
+$ps = New-PSSession -ComputerName $cn -Credential $cred
+
+Invoke-Command -Session $ps -ScriptBlock {gsv | select -First 1}
+#The great thing about storing the remote connection in a variable is that it can be used for additional commands as well. The following example shows the command that returns the first process from each of the two remote computers:
+
+Invoke-Command -Session $ps -ScriptBlock {gps | select -First 1}

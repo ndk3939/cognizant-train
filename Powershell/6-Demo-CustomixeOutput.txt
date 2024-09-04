@@ -1,0 +1,32 @@
+#Enter the commands you want to show case
+#Display Specific Properties
+Dir | Format-Table Name, Length
+Get-Process | Select-Object -property Name,ID,VM |Convert-ToHTML|Out-File test2.html
+#Wildcard Character
+Get-Process i* | Format-Table name,pe*64
+Get-WmiObject Win32_Share | Format-List [a-z]*
+#Converting the Data
+Dir | Format-Table Name, { [int]($_.Length/1KB) }
+Dir | Format-Table Name, Length, {(New-TimeSpan $_.LastWriteTime (Get-Date)).Days} –autosize
+#Changing Column Headings
+$column = @{Expression={ [int]($_.Length/1KB) }; Label="KB" }
+Dir | Format-Table Name, $column
+Dir | Format-Table Name, @{Expression={ [int]($_.Length/1KB) }; Label="KB" }
+#Sorting and Grouping Pipeline Results
+Dir | Sort-Object -property Length –descending
+Get-Service | Group-Object Status
+#The number of groups depends only on how many different values could be found in the property specified in the grouping operation.
+$result = Get-Service | Group-Object Status
+$result[0].Group
+Dir | Group-Object Extension
+Dir | Group-Object Extension | Sort-Object Count –descending
+
+#Filtering Pipeline Results
+Get-Service | Where-Object { $_.Status -eq "Running" }
+Get-WmiObject Win32_Service | ? {($_.Started -eq $false) -and ($_.StartMode -eq "Auto")} | Format-Table
+#Limiting Number of Objects
+Dir | Sort-Object Length -descending | Select-Object -first 5
+Get-Process | Sort-Object StartTime | Select-Object -last 5 | Format-Table ProcessName, StartTime
+
+
+

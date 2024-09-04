@@ -1,0 +1,17 @@
+#Enter the commands you want to show case
+
+
+Get-Alias g*
+gcm Get-Command
+#Use the wildcard asterisk (*) to obtain a listing of all the properties of the Get-Command cmdlet
+gcm Get-Command |Format-List *
+#This command only returns the property definition for the Get-Command cmdlet.
+gcm Get-Command | Format-List -property definition
+(gcm Get-Command).definition
+#Command returns a listing of all the cmdlets that contain a verb beginning with se.
+gcm -verb se*
+#Command will return all the cmdlets that contain a noun that begins with the letter o.
+gcm -noun o*
+#Retrieve only the syntax of the Get-Command cmdlet by specifying the -syntax argument
+gcm -syntax Get-Command
+

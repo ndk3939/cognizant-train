@@ -1,0 +1,80 @@
+
+#Enter the commands you want to show case
+
+# Simple PowerShell Pipeline Example
+Get-Process | Where-Object {$_.handlecount -gt 100 }
+#Guess What?
+Dir $env:windir | Sort-Object | notepad
+Dir $env:windir | Sort-Object | Out-File result.txt; notepad result.txt
+
+# Attention: danger!
+#Dir C:\ -recurse | Sort-Object
+
+Dir | Format-List *
+
+Dir | Select-Object Name, Length
+Get-WmiObject Win32_VideoController | Select-Object *resolution*
+Dir | Select-Object name, { [int]($_.Length/1KB) }
+Dir | Select-Object Name, Length, {(New-TimeSpan $_.LastWriteTime ).Days}
+
+#use a hash table to format columns more effectively and that can also rename them:
+
+$column = @{Expression={ [int]($_.Length/1KB) }; Name="KB" }
+Dir | Select-Object name, $column
+Name 
+Dir | Format-Table name, $column -AutoSize 
+Dir | Sort-Object @{expression="Length";Descending=$true},@{expression="Name";
+Ascending=$true}
+Dir $env:windir | Sort-Object -property Length -descending
+Dir | Sort-Object Extension, Name
+Get-Service | Group-Object Status    
+Dir | Sort-Object @{expression="Length";Descending=$true},@{expression="Name"; Ascending=$true}                                                         
+
+Get-Process `
+| Where-Object {$_.company -Notlike '*Microsoft*'}`
+| Format-Table ProcessName, Company -auto
+
+$result = Get-Service | Group-Object Status
+$result[0].Group
+Dir $env:windir | Group-Object Extension
+Dir $env:windir | Group-Object Extension | Sort-Object Count -descending
+Dir | Group-Object {$_.Length -gt 100KB}
+
+#Filtering
+Get-Service | Where-Object { $_.Status -eq "Running" }
+
+
+# List the five largest files in a directory:
+Dir | Sort-Object Length -descending | Select-Object -first 5
+
+
+# List the five longest-running processes:
+Get-Process | Sort-Object StartTime | Select-Object -last 5 |
+ Select-Object ProcessName, StartTime
+
+
+#Processing All Pipeline Results Simultaneously
+Get-Service | Where-Object { $_.Status -eq "Running" }
+#or
+Get-Service | ? { $_.Status -eq "Running" }
+Get-Service | ForEach-Object { if ($_.Status -eq "Running") { $_ } }
+#or
+Get-Service | % { if ($_.Status -eq "Running") { $_ } }
+
+Get-Service | ForEach-Object {"The service {0} is called '{1}': {2}" -f $_.Name, $_.DisplayName, $_.Status}
+
+
+#Removing Doubles
+1,2,3,1,2,3,1,2,3 | Sort-Object | Get-Unique
+#This method is particularly interesting when you break down text files' contents into single words. You can use the following line to do so:
+$filename = "c:\training\ps\testscripts\uptimereport.txt"
+$(foreach ($line in Get-Content $filename) {$line.tolower().split(" ")})
+
+#Then, you could sort this list of each word of a file and then either send it to Get-Unique (the list of all words that are in a text) or to Group-Object (the number of words used in a text):
+$filename = “c:\training\ps\testscripts\uptimereport.txt "
+$(foreach ($line in Get-Content $filename) {$line.tolower().split(" ")}) | Sort-Object | Get-Unique
+$(foreach ($line in Get-Content $filename) {$line.tolower().split(" ")}) | Sort-Object | Group-Object
+#Statistical Calculations
+Get-Content $filename | Measure-Object -character -line –word
+#Nested Pipelines
+Get-Service -computername (Get-Content c:\Training\ps\testscripts\servers.txt  |Where-Object -filter { $_ -notlike '*dc' }) |Where-Object -filter { $_.Status -eq 'Running' }

@@ -1,0 +1,1519 @@
+SUB QUERY
+
+DESC EMP2;
+drop table emp2;
+
+CREATE TABLE EMP2(EMPNO NUMBER(5), ENAME VARCHAR2(20), JOB VARCHAR2(20),SAL NUMBER(6), MGRNO NUMBER(4), DEPTNO NUMBER(3));
+
+desc emp2;
+
+select * from emp2;
+
+ INSERT INTO EMP2 VALUES(1001,'MAHESH','PROGRAMMER',15000,1560,200);
+  
+ INSERT INTO EMP2 VALUES(1002,'MANOJ','TESTER',12000,1560,200);
+  
+ INSERT INTO EMP2 VALUES(1003,'KARTHIK','PROGRAMMER',13000,1400,201);
+  
+ INSERT INTO EMP2 VALUES(1004,'NARESH','CLERK',1400,1400,201);
+  
+ INSERT INTO EMP2 VALUES(1005,'MANI','TESTER',13000,1400,200);
+  
+ INSERT INTO EMP2 VALUES(1006,'VIKI','DESIGNER',12500,1560,201);
+  
+ INSERT INTO EMP2 VALUES(1007,'MOHAN','DESIGNER',14000,1560,201);
+  
+ INSERT INTO EMP2 VALUES(1008,'NAVEEN','CREATION',20000,1400,201);
+  
+ INSERT INTO EMP2 VALUES(1009,'PRASAD','DIR',20000,1560,202);
+  
+ INSERT INTO EMP2 VALUES(1010,'AGNESH','DIR',15000,1400,200);
+  
+select * from emp2;
+
+CREATE TABLE DEPT2(DEPTNO NUMBER(3), DEPTNAME VARCHAR2(10),
+LOCATION VARCHAR2(15));
+
+desc dept2;
+
+   INSERT INTO DEPT2 VALUES(107,'DEVELOP','ADYAR');
+  
+   INSERT INTO DEPT2 VALUES(201,'DEBUG','UK');
+  
+   INSERT INTO DEPT2 VALUES(200,'TEST','US');    
+   
+   INSERT INTO DEPT2 VALUES(201,'TEST','USSR');
+  
+   INSERT INTO DEPT2 VALUES(108,'DEBUG','ADYAR');
+  
+   INSERT INTO DEPT2 VALUES(109,'BUILD','POTHERI');
+  
+select * from dept2;
+
+SELECT ENAME FROM EMP2 WHERE SAL>  
+(SELECT MIN(SAL) FROM EMP2 WHERE DEPTNO=  
+(SELECT DEPTNO FROM DEPT2 WHERE LOCATION='UK'));
+
+............................................................
+SELECT ENAME FROM EMP2 WHERE SAL>
+(SELECT MIN(SAL) FROM EMP2 WHERE DEPTNO=  
+(SELECT DEPTNO FROM DEPT2 WHERE LOCATION='US'));
+.......................................................................
+
+............inline view.......
+
+select rownum,ename from emp;
+select rownum,ename from emp where deptno=10;
+select rownum,ename from emp where rownum=1;
+select rownum,ename from emp where rownum=2;
+
+select rownum,ename from emp where rownum<=5;
+
+row number between 5 and 9.........
+
+select rownum,ename from emp where rownum<=9 minus 
+select rownum,ename from emp where rownum<=5;
+
+display 5th row ename and salary from emp table............
+
+select * from (select rownum n,ename from emp) where n=5;
+...............................................................................
+analytical function used in inline view  row_rank,dense_rank,rank..........
+
+select * from (select deptno,ename,sal ,row_number() over (partition by deptno order by sal desc) r from emp) where r <= 10 ;
+
+select * from (select deptno,ename,sal ,rank() over (partition by deptno order by sal desc) r from emp) where r <= 10 ;
+
+select * from (select deptno,ename,sal ,dense_rank() over ( order by sal desc) r from emp) where r <= 10 ;
+
+
+
+...........View............
+
+DESC EMPLOYEE;
+drop table employee;
+
+CREATE TABLE EMPLOYEE ( EMPLOYEE_NAME VARCHAR2(10), EMPLOYEE_NO NUMBER(8), DEPT_NAME VARCHAR2(10),DEPT_NO NUMBER(5),DATE_OF_JOIN DATE);
+
+insert into employee values('RAVI',124,'ECE',89,'15-JUN-05');
+insert into employee values('VIJAY',345,'CSE',21,'21-JUN-06');
+insert into employee values('RAJ',98,'IT',22,'30-SEP-06');
+insert into employee values('GIRI',100,'CSE',67,'14-NOV-81');
+
+desc employee;
+
+Select * from employee;
+
+CREATE VIEW EMPVIEW AS SELECT EMPLOYEE_NAME,EMPLOYEE_NO,DEPT_NAME,DEPT_NO,DATE_OF_JOIN FROM EMPLOYEE;
+
+DESC EMPVIEW;
+
+Select * from empview;
+
+INSERT INTO EMPVIEW VALUES ('SRI', 120,'CSE', 67,'16-NOV-1981');
+
+Select * from empview;
+
+Select * from employee;
+
+DELETE FROM EMPVIEW WHERE EMPLOYEE_NAME='SRI';
+
+Select * from empview;
+
+Select * from employee;
+
+UPDATE EMPVIEW SET EMPLOYEE_NAME='KAVI' WHERE EMPLOYEE_NAME='RAVI';
+
+Select * from empview;
+
+Select * from employee
+
+DROP VIEW EMPVIEW;
+
+
+Select * from empview;
+
+CREATE OR REPLACE VIEW EMP_VIEW1 AS SELECT EMPNO, ENAME, SAL FROM EMP;
+....................................................................
+
+DESC EMP
+
+CREATE OR REPLACE VIEW EMP_VIEW1 AS SELECT EMPNO, ENAME, SAL FROM EMP;
+
+SELECT * FROM EMP_VIEW1;
+
+CREATE OR REPLACE VIEW EMP_VIEW2 AS SELECT * FROM EMP WHERE DEPTNO=10;
+
+SELECT * FROM EMP_VIEW2;
+
+CREATE OR REPLACE VIEW EMP_NO_DML AS SELECT * FROM EMP WITH READ ONLY;
+
+CREATE OR REPLACE VIEW orders_view AS SELECT * FROM orders WITH READ ONLY;
+
+......................................................................
+
+
+select rownum,ename from emp;
+
+select rownum,ename from emp where deptno = 10;
+
+select * from emp where rownum <=9;
+
+select * from emp where rownum <=9 minus select * from emp where rownum <=3;
+..........................................................................
+ANALYTICAL FUNCTIONS USED IN INLINE VIEWS
+
+CREATE TABLE "AB_EMPLOYEE"  
+   (	"EMP_ID" VARCHAR2(5 BYTE),  
+	"EMP_NAME" VARCHAR2(20 BYTE),  
+	"DEPT_ID" VARCHAR2(5 BYTE),  
+	"EXPERTISE" VARCHAR2(50 BYTE),  
+	"SALARY" NUMBER(10,2),  
+	"RESULTS" VARCHAR2(10 BYTE) 
+   );
+
+desc AB_EMPLOYEE;
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('5003','ABINASH','1','SCIENCE','PASS',50000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('5003','ABINASH','1','ENGLISH','PASS',50000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('5003','ABINASH','1','MATH','PASS',50000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('107','AMARESH','2','MATH','PASS',50000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('107','AMARESH','2','ENGLISH','PASS',50000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('105','JYOTI','3','MATH','FAIL',75000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('105','JYOTI','3','ENGLISH','PASS',75000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('7003','NISHAD','2','ENGLISH','FAIL',70000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('7003','NISHAD','2','MATH','PASS',70000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('6003','RAKESH','2','MATH','PASS',50556);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('6003','RAKESH','2','ENGLISH','FAIL',50556);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('104','RAVI','2','MATH','PASS',70000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('104','RAVI','2','ENGLISH','PASS',70000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('106','REDDY','2','MATH','FAIL',80000);
+
+Insert into AB_EMPLOYEE (EMP_ID,EMP_NAME,DEPT_ID,EXPERTISE,RESULTS,SALARY) values ('106','REDDY','2','ENGLISH','PASS',80000);
+
+SELECT * FROM AB_EMPLOYEE;
+
+SELECT EMP_ID, DEPT_ID,EXPERTISE,SALARY,SUM(SALARY) OVER (PARTITION BY DEPT_ID) AS DEPT_SALARY,SUM(SALARY) OVER (PARTITION BY EXPERTISE) AS EXPERTISE_SALARY,ROW_NUMBER() OVER (PARTITION BY DEPT_ID ORDER BY SALARY DESC ) AS ROW_NUM ,RANK() OVER (PARTITION BY DEPT_ID ORDER BY SALARY DESC ) AS RANK_NUM,DENSE_RANK() OVER (PARTITION BY DEPT_ID ORDER BY SALARY DESC ) AS D_RANK_NUM  FROM AB_EMPLOYEE ORDER BY DEPT_ID,SALARY DESC;
+..........................................................................
+
+select deptno,ename,sal,row_number() over(partition by deptno order by sal desc) from emp;
+
+select deptno,ename,sal,row_number() over( order by sal desc) from emp;
+
+select deptno,ename,sal,rank() over( order by sal desc) from emp;
+
+select deptno,ename,sal,dense_rank() over( order by sal desc) from emp;
+
+select rownum,rowid,ename from emp;
+
+select max(rowid) from emp;
+.........................................................................
+
+SELECT empno,
+       ename,
+       job,
+       sal,
+       LEAD(sal, 1, 0) OVER (ORDER BY sal) AS sal_next,
+       LEAD(sal, 1, 0) OVER (ORDER BY sal) - sal AS sal_diff
+FROM   emp;
+
+.............................................................................
+
+SELECT deptno,
+       empno,
+       ename,
+       job,
+       sal,
+       LAG(sal, 1, 0) OVER ( ORDER BY sal) AS sal_prev
+FROM   emp;
+
+........................................................................
+
+select * from cts.emp e1   
+ where exists ( select null from cts.emp e2  
+                 where e2.mgr = e1.empno );
+
+....................................................................
+connect system/admin
+create user user1 identified by admin;
+grant dba to user1;
+grant create any view to user1;
+connect user1/admin
+create or replace view v1 as select * from emp where deptno = 10; 
+
+..........................................................................
+
+connect sys as sysdba
+password:sys
+
+or
+
+connect system/admin
+
+create user india identified by india;
+
+connect india/india
+
+connect system/admin
+
+grant connect , resource to india;
+
+connect india/india
+
+select * from cts.emp;
+
+desc cts.emp;
+
+connect system/admin
+
+grant all on cts.emp to india;
+
+connect india/india
+
+select * from cts.emp;
+
+desc cts.emp;
+........................................................................
+role......
+
+
+connect system/admin
+
+show user
+
+create role r10;
+
+grant create procedure, create any view, create any index to r10;
+
+grant r10 to india;
+
+desc role_sys_privs;
+
+select role,privilege from role_sys_privs;
+
+select role,privilege from role_sys_privs where role = 'R10';
+
+select role,privilege from role_sys_privs where role in ('CONNECT','RESOURCE');
+
+ select role,privilege from role_sys_privs where role in ('DBA');
+
+connect cts/cts
+
+create table abc(name varchar2(10),sal number(7));
+
+insert into abc values('kiran',34000);
+
+show user;
+
+SELECT owner, table_name FROM all_tables;
+
+grant all on abc to india;
+
+grant all on abc to r10;
+
+grant all on abc to public;
+
+desc user_tab_privs;
+
+connect india/india
+
+desc cts.abc
+
+select * from cts.abc;
+
+insert into cts.abc values('swathi',12999);
+
+select * from cts.abc;
+.........................................................................
+
+
+create  sequence s1  
+increment by 1
+start with 100
+maxvalue 105;
+
+select s1.nextval from dual;
+
+select s1.currval from dual;
+..........................................................................
+alter sequence s1 increment by -1;
+..........................................................................
+
+create  sequence s2  
+increment by 1
+start with 5
+minvalue 3
+maxvalue 8
+nocycle
+nocache;
+
+select s2.nextval from dual;
+
+.......................................................................
+create  sequence s2a  
+increment by 1
+start with 5
+minvalue 3
+maxvalue 8
+cycle
+nocache;
+
+select s2a.nextval from dual;
+
+.........................................................................
+create  sequence s3  
+increment by 1
+start with 5
+minvalue 3
+maxvalue 8
+nocycle
+nocache;
+
+select s3.nextval from dual;
+...........................................................................
+create  sequence s4  
+increment by 1
+start with 5
+minvalue 3;
+
+select s4.nextval from dual;
+
+..........................................................................
+alter sequence s13 increment by -3;
+
+desc user_sequences;
+
+select nvl2(NULL,10,20) from dual;
+
+select nvl2(50,10,20) from dual;
+
+
+..........................................................................
+
+
+set serveroutput on    
+
+    declare
+    a number(10);
+    begin
+    a:=50;
+    dbms_output.put_line('output result= ');
+    dbms_output.put_line(a);
+    end;
+    /
+
+......................................................................
+declare
+    a number(10);
+    begin
+    a:=50;
+    dbms_output.put_line('output result= ' || a);
+    end;
+    /
+............................................................................
+
+select * from v$version;
+
+..........................................................................
+
+
+declare
+ a number(12) not null:=30;
+ b constant  number(10):= 8;
+ BEGIN
+ DBMS_OUTPUT.PUT_LINE(a);
+ DBMS_OUTPUT.PUT_LINE(b);
+ END;
+ /
+
+............................................................................
+
+declare
+ a number(12) default 30;
+ BEGIN
+ DBMS_OUTPUT.PUT_LINE(a);
+  END;
+ /
+
+..........................................................................
+declare
+ v_sal number(12);
+ BEGIN
+ select max(sal) into v_sal from emp;
+ DBMS_OUTPUT.PUT_LINE(v_sal);
+  END;
+ /
+
+.........................................................................
+
+declare
+ v_ename varchar2(12);
+ v_sal  number(10);
+ BEGIN
+ select ename,sal into v_ename,v_sal from emp  where empno = &no;
+ DBMS_OUTPUT.PUT_LINE(v_ename || '        ' || v_sal);
+  END;
+ /
+
+.........................................................................
+
+
+declare 
+a number;
+b number; 
+c number; 
+begin 
+a:=&a; 
+b:=&b; 
+c:=a+b;
+dbms_output.put_line('sum of '||a||' and '||b||' is '||c);
+end;
+/
+
+.....................................................................
+
+DECLARE
+ena EMP.ENAME%TYPE;
+esa EMP.SAL%TYPE;
+BEGIN
+SELECT ENAME,SAL INTO ENA,ESA FROM EMP
+WHERE EMPNO = &EMPNO;
+DBMS_OUTPUT.PUT_LINE('NAME :' || ENA);
+DBMS_OUTPUT.PUT_LINE('SALARY :' || ESA);
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Employee no does not exits');
+END;
+/
+..........................................................................
+
+
+
+DECLARE
+ i  emp%rowtype;
+ BEGIN
+ select * into i from emp where empno = &no;
+ DBMS_OUTPUT.PUT_LINE(i.ename || ' salry is $ ' || i.sal);
+ END;
+ /
+..................................................................... 
+
+DECLARE
+i EMP%ROWTYPE;
+
+BEGIN
+SELECT ENAME,SAL,job,mgr INTO i.ENAME,i.SAL,i.job,i.mgr FROM EMP
+WHERE EMPNO = &EMPNO;
+DBMS_OUTPUT.PUT_LINE(i.ENAME ||'  ' || i.SAL ||'  ' || i.job || '  ' || i.mgr);
+
+
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Employee no does not exits');
+END;
+/
+...............................................................
+DECLARE
+sno student1.rollno%type;
+s_age student1.age%type;
+snm student1.sname%type;
+BEGIN
+sno := &sno;
+snm := &snm;
+pkg_student1.updateRecord(sno);
+IF pkg_student1.deleteRecord(snm) THEN
+dbms_output.put_line('RECORD DELETED');
+ELSE
+dbms_output.put_line('RECORD NOT FOUND');
+END IF;
+END;
+/
+.........................................................................
+
+
+
+DECLARE
+b number; 
+c number; 
+BEGIN 
+B:=30;
+C:=20;
+if(B>C) 
+THEN
+dbms_output.put_line('B is maximum');
+end if;
+end;
+/
+
+...................................................................
+declare 
+n number;
+begin
+dbms_output.put_line('enter a number ');
+n:=&number;
+if n<5 then
+dbms_output.put_line('entered number is less than 5');
+else
+dbms_output.put_line('entered number is greater than 5');
+end if;
+end;
+/
+
+.......................................................................
+declare 
+a number;
+b number; 
+c number; 
+begin 
+a:=&a; 
+b:=&b; 
+c:=&c; 
+if(a>b)and(a>c) 
+then 
+dbms_output.put_line('A is maximum');
+elsif(b>a)and(b>c)
+then 
+dbms_output.put_line('B is maximum'); 
+else
+dbms_output.put_line('C is maximum');
+end if;
+end;
+/
+........................................................................
+ 
+declare 
+n number:=1;
+begin 
+loop
+dbms_output.put_line(n);
+exit when n>=10;
+n:=n+1; 
+end loop;
+end;
+/
+..........................................................................
+
+declare 
+n number:=1;
+begin 
+loop
+dbms_output.put_line(n);
+if n>=10 then
+exit;
+end if;
+n:=n+1; 
+end loop;
+end;
+/
+.........................................................................
+declare 
+n number;
+sum1 number default 0;
+endvalue number; 
+begin 
+endvalue:=&endvalue; 
+n:=0;
+for n in 1..endvalue 
+LOOP
+if mod(n,2)=0 
+then 
+sum1:=sum1+n; 
+end if; 
+end loop;
+dbms_output.put_line('sum = '||sum1);
+end;
+/
+......................................................................
+declare 
+n number;
+sum1 number default 0;
+endvalue number; 
+begin 
+endvalue:=&endvalue; 
+n:=1;
+for n in 1..endvalue 
+LOOP
+if mod(n,2)=1 
+then 
+sum1:=sum1+n; 
+end if; 
+end loop;
+dbms_output.put_line('sum of odd no. = '||sum1);
+end;
+/
+
+..........................................................................
+declare 
+n number;
+sum1 number default 0;
+endvalue number; 
+begin 
+endvalue:=&endvalue; 
+n:=1; 
+while(n<=endvalue) 
+loop
+sum1:=sum1+n;
+n:=n+2;
+end loop;
+dbms_output.put_line('sum of odd no. bt 1 and ' ||endvalue||' is '||sum1);
+end;
+/
+.........................................................................
+
+declare 
+n number;
+sum1 number default 0;
+endvalue number; 
+begin 
+endvalue:=&endvalue; 
+n:=0; 
+while(n<=endvalue) 
+loop
+sum1:=sum1+n;
+n:=n+2;
+end loop;
+dbms_output.put_line('sum of even no. bt 1 and ' ||endvalue||' is '||sum1);
+end;
+/
+.....................................................................................
+
+  
+
+
+variable apple number;
+
+
+declare
+a number(10):= 50;
+begin
+:apple:=a/2;
+end;
+/
+
+print apple
+..........................................................................
+variable g number;
+
+   declare
+    a number(3):=12;
+    g number(4);
+    begin
+    :g:= a/2;
+    end;
+    /
+
+print g;
+..........................................................................
+
+declare
+ v_ename varchar2(12);
+ v_sal  number(10);
+ BEGIN
+ select ename,sal into v_ename,v_sal from emp where empno = &no;
+DBMS_OUTPUT.PUT_LINE(v_ename || ' salry is $' || v_sal);
+ END;
+ /
+
+..............................................................................
+ 
+DECLARE
+ena EMP.ENAME%TYPE;
+esa EMP.SAL%TYPE;
+CURSOR c1 IS SELECT ename,sal FROM EMP;
+BEGIN
+OPEN c1;
+FETCH c1 INTO ena,esa;
+DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+FETCH c1 INTO ena,esa;
+DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+
+FETCH c1 INTO ena,esa;
+DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+
+CLOSE c1;
+END;
+/
+
+
+.........................................................................
+
+
+
+DECLARE
+ ena EMP.ENAME%TYPE;
+ esa EMP.SAL%TYPE;
+ CURSOR c1 IS SELECT ename,sal FROM EMP;
+ BEGIN
+ OPEN c1;
+ FETCH c1 INTO ena,esa;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+
+ FETCH c1 INTO ena,esa;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+ 
+ FETCH c1 INTO ena,esa;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+
+ FETCH c1 INTO ena,esa;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+ 
+ FETCH c1 INTO ena,esa;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+ CLOSE c1;
+ END;
+ /
+
+...............................................................................
+DECLARE
+ ena EMP.ENAME%TYPE;
+ esa EMP.SAL%TYPE;
+ CURSOR c1 IS SELECT ename,sal FROM EMP;
+ BEGIN
+ OPEN c1;
+ loop
+ FETCH c1 INTO ena,esa;
+ exit when c1%notfound;
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+ end loop;
+ CLOSE c1;
+ END;
+ /
+........................................................................
+
+DECLARE
+ ena EMP.ENAME%TYPE;
+ esa EMP.SAL%TYPE;
+ CURSOR c1 IS SELECT ename,sal FROM EMP;
+ BEGIN
+ OPEN c1;
+ loop
+ FETCH c1 INTO ena,esa; 
+ DBMS_OUTPUT.PUT_LINE(ena || ' salry is $ ' || esa);
+ exit when c1%rowcount >=5;
+ end loop;
+ CLOSE c1;
+ END;
+ /
+.....................................................................................
+
+
+PROCEDURE
+.........................................................................
+
+CREATE OR REPLACE PROCEDURE PROC1 AS
+ BEGIN
+ DBMS_OUTPUT.PUT_LINE('Hello from procedure...');
+ END;
+ /
+
+EXECUTE PROC1
+.........................................................................
+
+
+BEGIN
+ proc1
+ END;
+/
+
+SET SERVEROUTPUT ON
+..
+EXECUTE PROC1
+.........................................................................
+CREATE OR REPLACE PROCEDURE p1
+ (N1 IN NUMBER,N2 IN NUMBER,TOT OUT NUMBER) IS
+ BEGIN
+ TOT := N1 + N2;
+ END;
+ /
+
+VARIABLE T NUMBER;
+
+EXEC p1(33,66,:T)
+
+print T
+
+......................................................................
+declare
+T number;
+BEGIN
+ p1(33,66,T);
+ dbms_output.put_line(T);
+ END;
+/
+........................................................................
+call p1(33,66,:T);
+print T
+.........................................................................
+CREATE OR REPLACE PROCEDURE p2(p_empno  NUMBER(6)) IS
+v_ename varchar2(10);
+v_sal varchar(10);
+ BEGIN
+ select ename,sal into v_ename,v_sal from emp where empno=p_empno;
+ dbms_output.put_line(v_ename || ' total salary is ' || v_sal);
+ END;
+ /
+
+
+
+exec p2(7900)
+.........................................................................
+
+ CREATE OR REPLACE PROCEDURE P3(p_empno number)
+is
+v_ename varchar2(10);
+v_sal number(10);
+ BEGIN
+ select ename,sal into v_ename,v_sal from emp where empno=p_empno;
+DBMS_OUTPUT.PUT_LINE(v_ename || '    ' || v_sal);
+ END;
+ /
+
+exec p3(7900)
+
+begin
+p3(7900);
+end;
+/
+
+call p3(7900);
+
+ desc user_source
+
+select TEXT from user_source where name='P3';
+
+...........................................................................
+create or replace procedure p4(a in number,b out number)
+is
+begin
+b := a*a;
+end;
+/
+
+
+variable t number;
+exec p4(6,:t);
+print t;
+
+
+declare
+T number;
+BEGIN
+ p4(7,T);
+ dbms_output.put_line(T);
+ END;
+/
+
+.......................................................................
+
+CREATE OR REPLACE PROCEDURE P5(p_ename in varchar2, p_sal out number)
+is
+ BEGIN
+ select sal into p_sal from emp where ename = p_ename;
+ END;
+ /
+
+variable t number;
+exec p5('JAMES',:t);
+print t;
+
+declare
+T number;
+BEGIN
+ p5('JAMES',T);
+ dbms_output.put_line(T);
+ END;
+/
+
+............................................................................
+create or replace procedure p6(a in out number)
+is
+begin
+a := a*a;
+end;
+/
+
+declare
+T number;
+BEGIN
+T := 8;
+ p6(T);
+ dbms_output.put_line(T);
+ END;
+/
+
+
+variable t number;
+exec p6(:t);
+print t;
+
+..........................................................................
+FUNCTION
+..........................................................................
+create function f1(a varchar2)
+return varchar2 
+is 
+begin  
+return a; 
+end;
+/
+
+select f1('hi') from dual;
+
+Declare
+x varchar2(10);
+begin 
+x:=f1('Welcome');
+dbms_output.put_line(x); 
+end;
+/
+
+
+.....................................................................
+create function f2(a number)
+return varchar2 
+is 
+begin 
+if mod(a,2)=0 then
+return 'even'; 
+else
+return 'odd';
+end if; 
+end;
+/
+
+*select dual*
+select f2(5) from dual;
+
+**anonymous bloc method*
+Declare
+x varchar2(10);
+begin 
+x:=f2(6); 
+dbms_output.put_line(x); 
+end;
+/
+
+*bind variable method*
+variable x varchar2(10);
+
+begin
+:x:=f2(3);
+end;
+/
+
+print x;
+
+*exec method*
+exec dbms_output.put_line(f2(7));
+
+*anoynms block*
+begin
+dbms_output.put_line(f2(8));
+end;
+/
+
+.....................................................................
+
+create function fnfact(n number)
+return number 
+is 
+b number;
+begin b:=1;
+for i in 1..n 
+loop 
+b:=b*i;
+end loop; 
+return b; 
+end;
+/
+
+
+select fnfact(5) from dual;
+
+*anonymous bloc method*
+Declare
+n number:=&n;
+y number;
+begin 
+y:=fnfact(n); 
+dbms_output.put_line(y); 
+end;
+/
+
+
+begin 
+dbms_output.put_line(fnfact(5)); 
+end;
+/
+
+Declare
+n number:=&n;
+begin 
+dbms_output.put_line(fnfact(n)); 
+end;
+/
+
+*exec method*
+exec dbms_output.put_line(fnfact(5));
+
+*bind variable method*
+variable x number(10);
+
+begin
+:x:=fnfact(5);
+end;
+/
+
+print x;
+
+..........................................................................
+
+create table phonebook (phone_no number (6) primary key,username varchar2(30),doorno varchar2(10),street varchar2(30),place varchar2(30),pincode char(6));
+
+desc phonebook;
+
+insert into phonebook values(20312,'vijay','120/5D','bharathi street','NGO colony','629002');
+
+insert into phonebook values(29467,'vasanth','39D4','RK bhavan','sarakkal vilai','629002');
+
+select * from phonebook;
+
+create or replace function findAddress(phone in number) return varchar2 as address varchar2(100);
+begin
+select username||','||doorno ||','||street ||','||place||','||pincode into address from phonebook where phone_no=phone;
+return address;
+exception
+when no_data_found then return 'address not found';
+end;
+/
+
+select findaddress(20312) from dual;
+
+
+declare
+ address varchar2(100);
+ y number;
+ begin
+ y:= &no;
+ address:=findaddress(y);
+ dbms_output.put_line(address);
+ end;
+ /
+
+exec dbms_output.put_line(findaddress(20312));
+
+........................................................................................................................
+
+trigger
+..........................................................................
+set serveroutput on
+
+CREATE TABLE govemp (EMPNO NUMBER(3), ENAME VARCHAR2(10), SALARY NUMBER(8,2));
+
+desc govemp
+
+create  sequence slgov 
+increment by 1
+start with 101
+minvalue 101
+maxvalue 110
+nocycle
+nocache;
+/
+
+create or replace trigger gov_trigger
+    after insert on govemp
+    for each row
+    begin
+    if inserting then
+    DBMS_OUTPUT.PUT_LINE('new emp joined  ' || slgov.currval || '  ' ||sysdate);
+    end if;
+    end;
+    /
+
+
+insert into govemp values (slgov.nextval,'raju',10000);
+
+
+create or replace trigger gov_del_trigger
+    after delete on govemp
+    for each row
+    begin
+    if deleting then
+    DBMS_OUTPUT.PUT_LINE('old emp deleted  ' ||sysdate);
+    else
+    DBMS_OUTPUT.PUT_LINE('no emp deleted  ' ||sysdate);
+    end if;
+    end;
+    /
+
+
+
+create or replace trigger gov_update_trigger
+    after update on govemp
+    for each row
+    begin
+    if updating then
+    DBMS_OUTPUT.PUT_LINE('emp statement updated  ' ||sysdate);
+    end if;
+    end;
+    /
+
+select * from govemp;
+
+insert into govemp values (slgov.nextval,'swathi',38000);
+
+select * from govemp;
+
+delete from govemp where ename = 'swathi';
+
+update  govemp set salary = salary+100 where ename = 'raju';
+
+drop trigger gov_update_trigger;
+..........................................................................
+
+(Login sys/system  user)
+
+create or replace trigger ddl_update
+    after create  on database
+    
+    begin
+    DBMS_OUTPUT.PUT_LINE('Somebody create database obeject  ' ||sysdate);
+    end;
+    /
+
+
+create table ta1(sno number(4),name varchar2(12));
+
+alter table ta1 disable all triggers;
+
+alter table ta1 enable all triggers;
+
+desc user_triggers;
+
+drop trigger triggername;
+
+.............................................................................
+
+CREATE TABLE STUDENT1 (ROLLNO NUMBER(4), SNAME VARCHAR2(10),AGE NUMBER (3),COURSE VARCHAR2(10));
+
+INSERT INTO STUDENT1 VALUES(101,'RAJU',18,'ECE');
+INSERT INTO STUDENT1 VALUES(102,'MOHAN',19,'CSE');
+INSERT INTO STUDENT1 VALUES(103,'KIRAN',18,'EEE');
+INSERT INTO STUDENT1 VALUES(104,'SUNIL',20,'IT');
+
+ select * from student1;
+
+
+CREATE OR REPLACE PACKAGE pkg_student1 IS
+PROCEDURE  updateRecord(sno student1.rollno%type);
+FUNCTION deleteRecord(snm student1.sname%type)
+RETURN boolean;
+END pkg_student1;
+/
+
+.....................................................................
+
+CREATE OR REPLACE PACKAGE BODY pkg_student1 
+IS
+PROCEDURE updateRecord(sno student1.rollno%type) 
+IS
+BEGIN
+Update student1 set age=21 where rollno=sno;
+IF  SQL%FOUND THEN
+dbms_output.put_line('RECORD UPDATED');
+ELSE
+dbms_output.put_line('RECORD NOT FOUND');
+END IF;
+END updateRecord;
+
+
+FUNCTION deleteRecord(snm student1.sname%type) RETURN boolean 
+IS
+BEGIN
+Delete from student1 where sname=snm;
+RETURN SQL%FOUND;
+END deleteRecord;
+END pkg_student1;
+/
+
+exec pkg_student1.updateRecord(101);
+
+select * from student1;
+
+exec pkg_student1.deleteRecord('KIRAN');
+........................................................................
+CREATE OR REPLACE PACKAGE pk1
+IS
+PROCEDURE  a1;
+PROCEDURE  a2;
+PROCEDURE  a3;
+END ;
+/
+
+CREATE OR REPLACE PACKAGE BODY pk1 
+IS
+PROCEDURE a1
+IS
+BEGIN
+dbms_output.put_line('First Procedure output');
+end a1;
+
+PROCEDURE a2
+IS
+BEGIN
+dbms_output.put_line('second Procedure output');
+end a2;
+
+PROCEDURE a3
+IS
+BEGIN
+dbms_output.put_line('Third Procedure output');
+end a3;
+end pk1;
+/
+
+exec pk1.a1;
+........................................................................
+
+Index by table
+
+.............................................................................
+
+DECLARE
+ type t1 is table of varchar2(10)
+ index by binary_integer;
+ v_t t1;
+ CURSOR c1 IS SELECT ename FROM EMP;
+ n number(10):= 1;
+ BEGIN
+ OPEN c1;
+ loop
+ FETCH c1 INTO v_t(n); 
+ exit when c1%notfound;
+ n:=n+1;
+ end loop;
+ CLOSE c1;
+ for i in v_t.first..v_t.last
+ loop
+ DBMS_OUTPUT.PUT_LINE(v_t(i));
+ end loop;
+ END;
+ /
+.................................................................................
+
+DECLARE
+ type t1 is table of varchar2(10)
+ index by binary_integer;
+ v_t t1;
+ CURSOR c1 IS SELECT ename FROM EMP;
+ BEGIN
+ select ename bulk collect into v_t from emp;
+ for i in v_t.first..v_t.last
+ loop
+ DBMS_OUTPUT.PUT_LINE(v_t(i));
+ end loop;
+ END;
+ /
+................................................................................
+
+DECLARE
+ type t1 is table of varchar2(10)
+ index by binary_integer;
+ v_t t1;
+ BEGIN
+ v_t(1):= 10;
+ v_t(2):= 20;
+ v_t(3):= 30;
+ v_t(4):= 40;
+ v_t(5):= 50;
+ DBMS_OUTPUT.PUT_LINE(v_t(1));
+ DBMS_OUTPUT.PUT_LINE(v_t.first);
+ DBMS_OUTPUT.PUT_LINE(v_t.last);
+ DBMS_OUTPUT.PUT_LINE(v_t.count);
+ DBMS_OUTPUT.PUT_LINE(v_t.prior(3));
+ end;
+ /
+.................................................................
+
+
+
+Sql loader lab
+step 1;
+
+create a new flatfile
+Open notepad  type
+
+101,aravinda,2000
+102,kumar,1000
+103,kiran,500
+104,rajesh,300
+105,sai,200
+
+save as e:\name.txt
+
+step 2;
+
+oracle login admin user
+Create a new table
+
+create table ctsename(empno number(4),ename varchar2(10),sal number(7));
+
+desc ctsename
+
+select * from ctsename;
+
+step 3;
+
+create a control file
+open notepad type this command
+
+load data
+infile 'e:\name.txt'
+insert
+into table ctsename
+fields terminated by ','
+(empno,ename,sal)
+
+
+save as e:\name.ctl
+
+step 4;
+
+open command prompt
+
+sqlldr userid=admin/admin
+
+step 5;
+
+oracle login  as admin user
+
+select * from ctsename;
+
+step 6:
+
+edit a control file (name.ctl)
+type this command
+
+load data
+infile 'e:\name.txt'
+badfile 'e:\ctsnamebad.txt'
+discardfile 'e:\ctsdiscard.dsc'
+insert
+into table ctsename
+when sal = '700'
+fields terminated by ','
+(empno,ename,sal)
+
+
+
+truncate table ctsename;
+
+
+sqlldr userid=admin/admin
+
+select * from ctsename;
+
+................................................................
+
+utl_file Package
+
+windows command prompt.....
+
+sqlplus / as sysdba
+
+or
+
+connect sys as sysdba
+Enter password:admin
+
+grant create any directory to cts;
+
+connect cts/cts
+
+create or replace directory ABC as 'e:\';
+
+connect sys as sysdba
+Enter password:admin
+
+grant read,write on directory ABC to cts;
+grant execute on sys.utl_file to cts;
+
+connect cts/cts
+
+declare
+fp UTL_FILE.FILE_TYPE;
+begin
+fp:=UTL_FILE.FOPEN('ABC','db.txt','w');
+UTL_FILE.PUTF(fp,'cts  user run');
+UTL_FILE.FCLOSE(fp);
+end;
+/
+
+declare
+fp utl_file.file_type;
+cursor c1 is select ename from emp;
+begin
+fp:=utl_file.fopen('ABC','file1.txt','w');
+for i in c1
+loop
+utl_file.putf(fp,i.ename);
+end loop;
+utl_file.fclose(fp);
+end;
+/
+
+declare
+fp utl_file.file_type;
+cursor c1 is select ename from emp;
+begin
+fp:=utl_file.fopen('ABC','file2.txt','w');
+for i in c1
+loop
+utl_file.putf(fp,'%s\n',i.ename);
+end loop;
+utl_file.fclose(fp);
+end;
+/
+
+ set serveroutput on
+
+declare
+fp utl_file.file_type;
+x varchar2(200);
+begin
+fp:=utl_file.fopen('ABC','file2.txt','r');
+utl_file.get_line(fp,x);
+dbms_output.put_line(x);
+utl_file.fclose(fp);
+end;
+/
+
+
+declare
+fp utl_file.file_type;
+x varchar2(200);
+begin
+fp:=utl_file.fopen('ABC','file1.txt','r');
+loop
+utl_file.get_line(fp,x);
+dbms_output.put_line(x);
+end loop;
+utl_file.fclose(fp);
+end;
+/
+........................................................................

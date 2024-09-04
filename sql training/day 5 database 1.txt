@@ -1,0 +1,328 @@
+CONSTRAINT type...............
+
+
+CREATE TABLE c1 (EMPNO NUMBER(4) PRIMARY KEY,
+ENAME VARCHAR2(10));
+insert into c1 values (1,'user1');
+insert into c1 values (2,'user2'); 
+insert into c1 values (2,'user3');
+insert into c1 values (3,'user2');
+insert into c1 values (null,'user4');
+insert into c1 values (4,'user4');
+
+desc c1;
+select * from c1;
+.........................................................................
+
+
+CREATE TABLE c2 (EMPNO NUMBER(4) CONSTRAINT C2_EMPNO_PK PRIMARY KEY,
+ENAME VARCHAR2(10));
+insert into c2 values (1,'user1');
+insert into c2 values (2,'user2'); 
+insert into c2 values (2,'user3');
+insert into c2 values (3,'user2');
+insert into c2 values (null,'user4');
+insert into c2 values (4,'user4');
+
+desc c2;
+select * from c2;
+.........................................................................
+
+
+CREATE TABLE c3 (EMPNO NUMBER(4) ,
+ENAME VARCHAR2(10),CONSTRAINT C3_EMPNO_PK PRIMARY KEY(EMPNO));
+insert into c3 values (1,'user1');
+insert into c3 values (2,'user2'); 
+insert into c3 values (2,'user3');
+insert into c3 values (3,'user2');
+insert into c3 values (null,'user4');
+insert into c3 values (4,'user4');
+
+desc c3;
+select * from c3;
+.........................................................................
+
+
+CREATE TABLE c4 (EMPNO NUMBER(4),ENAME VARCHAR2(10));
+desc c4;
+ALTER TABLE c4 ADD CONSTRAINT C4_EMPNO_PK PRIMARY KEY(EMPNO);
+desc c4;
+insert into c4 values (1,'user1');
+insert into c4 values (2,'user2'); 
+insert into c4 values (2,'user3');
+insert into c4 values (3,'user2');
+insert into c4 values (null,'user4');
+insert into c4 values (4,'user4');
+Select * from c4;
+................................................................
+
+CREATE TABLE master (EMPNO NUMBER(4) PRIMARY KEY,
+ENAME VARCHAR2(10));
+
+desc master;
+
+insert into master values (1,'user1');
+insert into master values (2,'user2'); 
+insert into master values (2,'user3');
+insert into master values (3,'user2');
+insert into master values (null,'user4');
+insert into master values (4,'user4');
+
+select * from master;
+
+
+CREATE TABLE child (EMPNO NUMBER(4),
+DEPTNO NUMBER(2), CONSTRAINT CHILD_DEPTNO_FK foreign key (empno) REFERENCES master(EMPNO));
+
+desc child;
+
+insert into child values (1,10);
+insert into child values (2,20); 
+insert into child values (2,10);
+
+select * from master;
+select * from child;
+
+.......................................................................
+
+
+CREATE TABLE child1 (EMPNO NUMBER(4),
+DEPTNO NUMBER(2), CONSTRAINT CHILD1_DEPTNO_FK foreign key (empno) REFERENCES master(EMPNO));
+
+desc child1;
+
+insert into child1 values (1,10);
+insert into child1 values (2,20); 
+insert into child1 values (2,10);
+
+select * from master;
+select * from child1;
+
+
+.......................................................................
+
+
+CREATE TABLE child2 (EMPNO NUMBER(4),
+DEPTNO NUMBER(2), CONSTRAINT CHILD2_DEPTNO_FK FOREIGN KEY(EMPNO) REFERENCES DEPTABLE(EMPNO));
+
+desc child2;
+
+insert into child2 values (1,10);
+insert into child2 values (2,20); 
+insert into child2 values (2,10);
+select * from master;
+select * from child2;
+.....................................................................
+
+
+CREATE TABLE child3 (EMPNO NUMBER(4),DEPTNO NUMBER(2));
+
+desc child3;
+
+ALTER TABLE child3 ADD CONSTRAINT child3_DEPTNO_FK FOREIGN KEY(EMPNO)REFERENCES master(EMPNO);
+
+insert into child3 values (1,10);
+insert into child3 values (2,20); 
+insert into child3 values (2,10);
+select * from master;
+select * from child3;
+....................................................................
+
+
+CREATE TABLE c5 (EMPNO NUMBER(4),ENAME VARCHAR2(10),SAL NUMBER(5) CONSTRAINT c5_SAL_CK CHECK(SAL>500 AND SAL<10001));
+
+
+insert into c5 values (1,'user1',501);
+insert into c5 values (2,'user2',1200); 
+insert into c5 values (2,'user3',1500);
+insert into c5 values (3,'user2',400);
+insert into c5 values (null,'user4',10000);
+insert into c5 values (4,'user4',10030);
+
+desc c5;
+select * from c5;
+....................................................................
+
+CREATE TABLE c6 (EMPNO NUMBER(4),ENAME VARCHAR2(10),SAL NUMBER(5),CONSTRAINT c6_SAL_CK CHECK(SAL>500 AND SAL<10001));
+
+
+insert into c6 values (1,'user1',501);
+insert into c6 values (2,'user2',1200); 
+insert into c6 values (2,'user3',1500);
+insert into c6 values (3,'user2',400);
+insert into c6 values (null,'user4',10000);
+insert into c6 values (4,'user4',10030);
+
+desc c6;
+select * from c6;
+..........................................................................
+
+CREATE TABLE c7 (EMPNO NUMBER(4),ENAME VARCHAR2(10),SAL NUMBER(5));
+
+desc c7;
+
+ALTER TABLE c7 ADD CONSTRAINTS c7_SAL_CK CHECK(SAL>500 AND SAL<10001);
+
+insert into c7 values (1,'user1',501);
+insert into c7 values (2,'user2',1200); 
+insert into c7 values (2,'user3',1500);
+insert into c7 values (3,'user2',400);
+insert into c7 values (null,'user4',10000);
+insert into c7 values (4,'user4',10030);
+
+desc c7;
+select * from c7;
+
+.......................................................................
+
+CREATE TABLE EMP10(EMPNO NUMBER(3), ENAME VARCHAR2(20),
+DESIGN VARCHAR2(15) CONSTRAINT EMP10_DESIGN_UK UNIQUE, SAL NUMBER(5));
+
+DESC EMP10;
+--------------------------------------------
+CREATE TABLE c8 (EMPNO NUMBER(4),ENAME VARCHAR2(10) CONSTRAINT c8_DESIGN_UK UNIQUE);
+insert into c8 values (1,'user1');
+insert into c8 values (2,'user2'); 
+insert into c8 values (2,'user3');
+insert into c8 values (3,'user2');
+insert into c8 values (null,'user4');
+insert into c8 values (4,null);
+
+desc c8;
+select * from c8;
+....................................................................
+
+
+CREATE TABLE c9 (EMPNO NUMBER(4),ENAME VARCHAR2(10), CONSTRAINT c9_DESIGN_UK UNIQUE(ENAME));
+insert into c9 values (1,'user1');
+insert into c9 values (2,'user2'); 
+insert into c9 values (2,'user3');
+insert into c9 values (3,'user2');
+insert into c9 values (null,'user4');
+insert into c9 values (4,null);
+
+desc c9;
+select * from c9;
+.....................................................................
+
+
+CREATE TABLE c10 (EMPNO NUMBER(4),ENAME VARCHAR2(10));
+
+DESC C10;
+
+ALTER TABLE C10 ADD CONSTRAINT C10_ENAME_UK UNIQUE(ENAME);
+
+DESC C10;
+
+
+insert into c10 values (1,'user1');
+insert into c10 values (2,'user2'); 
+insert into c10 values (2,'user3');
+insert into c10 values (3,'user2');
+insert into c10 values (null,'user4');
+insert into c10 values (4,null);
+
+desc c10;
+select * from c10;
+.....................................................................
+
+CREATE TABLE c11 (EMPNO NUMBER(4),ENAME VARCHAR2(10) CONSTRAINT C11_ENAME_NN NOT NULL);
+insert into c11 values (1,'user1');
+insert into c11 values (2,'user2'); 
+insert into c11 values (2,'user3');
+insert into c11 values (3,'user2');
+insert into c11 values (null,'user4');
+insert into c11 values (4,null);
+
+desc c11;
+select * from c11;
+......................................................................
+
+
+CREATE TABLE c12 (EMPNO NUMBER(4),ENAME VARCHAR2(10) CONSTRAINT C12_ENAME_N NULL);
+insert into c12 values (1,'user1');
+insert into c12 values (2,'user2'); 
+insert into c12 values (2,'user3');
+insert into c12 values (3,'user2');
+insert into c12 values (null,'user4');
+insert into c12 values (4,null);
+
+desc c12;
+select * from c12;
+.........................................................................
+ALTER TABLE C11 DISABLE CONSTRAINT C11_ENAME_NN;
+
+DESC C11;
+
+select constraint_name,constraint_type from user_constraints where table_name='C11';
+..............................................................
+ALTER TABLE C11 DISBLE CONSTRAINT C11_ENAME_NN;
+
+DESC C11;
+
+ALTER TABLE C11 ENABLE CONSTRAINT C11_ENAME_NN;
+
+DESC C11;
+
+.........................................................................
+
+
+desc user_constraints;
+
+select constraint_name,constraint_type from user_constraints where table_name='EMP';
+
+select constraint_name,constraint_type from user_constraints where table_name='DEPT';
+
+ select constraint_name,column_name from user_cons_columns where table_name='EMP';
+
+ select search_condition  from user_constraints where table_name='EMP';
+
+DESC user_tab_columns;
+
+select COLUMN_NAME from user_tab_columns where TABLE_NAME = 'EMP';
+
+desc emp;
+
+..........................................................................
+DEFAULTS CONSTRAINTS
+
+create table test(name varchar2(10),sal number(10) default 2000);
+
+desc test;
+
+insert into test values('aravinda',300000);
+
+select * from test;
+
+insert into test(name) values('ganesh');
+
+select * from test;
+
+ select COLUMN_NAME ,data_default from user_tab_columns where TABLE_NAME = 'TEST';
+
+...............................................................................
+.............drop CONSTRAINT....................
+
+create table test1(name varchar2(10) primary key,sal number(10) unique);
+
+desc test1;
+
+alter table test1 drop primary key;
+
+or
+
+alter table test1 drop primary key cascade;
+
+
+
+create table test2(name varchar2(10) CONSTRAINT test2_pk primary key,sal number(10) unique);
+
+desc test2;
+
+select constraint_name,constraint_type from user_constraints where table_name='TEST2';
+
+alter table test2 drop CONSTRAINT test2_pk;
+
+select constraint_name,constraint_type from user_constraints where table_name='TEST2';
+
+desc test2;

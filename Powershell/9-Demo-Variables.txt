@@ -1,0 +1,133 @@
+
+
+#Enter the commands you want to show case
+<#
+# create variables and assign to values
+$amount = 120
+$VAT = 0.19
+# Calculate:
+$result = $amount * $VAT
+# Output result
+$result
+
+# Guess what?
+$text = "Net amount $amount matches gross amount $result"
+$text
+#>
+
+[Int]$amount = "Enter amount of money"
+[Double]$VAT = "Enter VAT rate"
+
+# Guess what?
+$listing = Get-ChildItem c:\
+$listing
+$result = ipconfig
+$result
+
+#Finding the variables
+Dir variable:
+$Value1 = 10; $Value2 = 20
+Dir variable:value*
+
+#Guess what?
+$Value1 = 10
+$Value2 = 20
+$Temp = $Value1
+$Value1 = $Value2
+$Value2 = $Temp
+
+#OR
+$Value1 = 10; $Value2 = 20
+$Value1, $Value2 = $Value2, $Value1
+
+# Create new variable with description and write-protection:
+New-Variable test -value 100 -description "test variable with write-protection" -option ReadOnly
+
+$test
+
+# Guess What
+$test = 200
+
+#You must delete the variable and re-define it if you want to modify its value.
+del variable:\test –force
+
+$Constant
+New-Variable test -value 100 -description "test variable with copy protection" -option Constant
+del variable:\test –force
+
+#To understand the meaning of automatic variables, you can simply view their description:
+Dir variable: | Sort-Object Name | Format-Table Name, Description -autosize -wrap
+
+#In case you want to see help
+Get-Help about_automatic_variables
+
+#String Concatenation
+$strA = “Hello “
+$strB = “World!”
+$strC = $strA + $strB
+$strC
+$strA = “Go east young man!”
+$strB = $strA -replace “east”, “west”
+$strB
+
+#Interpolation
+$strA = “Go east young man!”
+$strB = $strA -replace “east”, “west”
+#By double-quoting, the output of the “Write-Host” 
+Write-Host "I drive a $strB car."
+
+$strA = “fast”
+Write-Host ‘I drive a $strA car.’
+
+#Environmental Variables
+$env:windir
+$env:userprofile
+"The Windows folder is here: $env:windir"
+
+# Searching for Environment Variables
+Dir env:
+
+#Creating New Environment Variables
+$env:TestVar =”test”
+Dir env:\t*
+
+#Any guesses??
+$env:path = $env:path + ";C:\test"
+
+#$oldValue = [environment]::GetEnvironmentvariable("Path", "User")
+#$newValue = ";c:\myTools"
+#[environment]::SetEnvironmentvariable("Path", $newValue, "User") 
+#The permanent change just made applies only to the logged-on user. If you’d like this change to be in effect for all computer users, you can replace the "User" argument by "Machine."
+
+#Strongly Typing
+(12).GetType().Name 
+(1000000000000).GetType().Name 
+(12.5).GetType().Name 
+(12d).GetType().Name 
+("H").GetType().Name 
+(Get-Date).GetType().Name
+
+
+
+#Declaring a variable’s type
+$number = Read-Host "Enter a number"
+#Enter a number: 100
+$number = $number * 10
+$number
+
+#If you’re sharp-eyed, you may have spotted what’s happening. 
+$number | gm
+
+[int]$number = Read-Host "Enter a number"
+$number = $number * 10
+$number
+
+[int]$number = Read-Host "Enter a number"
+#Enter a number: Hello
+
+write-host "COLORFUL!" -fore yellow -back magenta
+
+
+
+
+

@@ -1,0 +1,150 @@
+
+
+#Enter the commands you want to show case
+$thisIsAnInt = 7
+$thisIsADouble = 6.789
+$thisIsABoolean = $false
+$thisIsAString = “This is a string”
+
+$thisIsAnInt.GetType().FullName
+$thisIsADouble.GetType().FullName
+$thisIsABoolean.GetType().FullName
+$thisIsAString.GetType().FullName
+
+$a = "cat"; $a 
+
+#Because the code assigns a string to $a, PowerShell automatically casts $a with the System.String type
+$a.GetType().FullName 
+$a = $a + " & dog "
+ $a 
+$a = $a + 10
+ $a 
+
+#following statements demonstrate how PowerShell assigns data types to numerical values
+$a = 1234
+ $a 
+$a.GetType().FullName
+$a = 12345678910
+ $a
+$a.GetType().FullName
+$a = 1234.5678
+ $a
+$a.GetType().FullName
+$a = 1234.5678d
+ $a
+$a.GetType().FullName 
+
+$a = 1234
+ $a
+$a.GetType().FullName
+$a = $a + 1.5678
+ $a
+$a.GetType().FullName 
+
+[string]$iAmAnInt = “5”
+[int]$iAmAnInt = $iAmAnInt
+$iAmAnInt.GetType().FullName
+
+#also possible to cast a variable on the fly without permanently changing the variable’s data type. Check this out:
+
+[double]$aNum = 5.02
+[int]$anInt = 10
+[int]$newInt = ($aNum –as [int]) + $anInt
+($aNum –as [int])
+$newInt
+write-host “`$aNum =” $aNum.GetType().FullName
+
+#Arrays are collections that have the System.Object[] type. The [] after the data type lets you know that it's an array with multiple values
+
+$a = "a","b","c"
+ $a  
+$a.GetType().FullName
+$a[0] 
+$a = $a + "d"
+ $a 
+
+#you can add any type of value to an array
+$a = 10, "cat", (Get-Date)
+$a 
+$a.GetType().FullName 
+
+$a[0].GetType().FullName
+$a[1].GetType().FullName
+$a[2].GetType().FullName
+
+$a[1] = "Dog"
+$a
+
+#Hashtables
+
+$a = @{b="bird"; c="cat"; d="dog"}  
+                 $a 
+$a.GetType().FullName 
+
+#enclose the collection of key/value pairs. The first key/value pair is b/bird
+$a.Keys | Sort
+$a.Values | Sort
+$a.b
+
+$a = @{b="bird"; c="cat"; d="dog"}
+$a.e = "elephant"
+ $a 
+
+$a = @{b="bird"; c="cat"; d="dog"}
+ $a
+$a.d = "dingo"
+ $a 
+
+$a.remove("d")
+ $a 
+
+#Casting and converting
+$a = [double] "10"   
+$a.GetType().FullName 
+
+#you can achieve the same results with the code
+
+[double] $b = "10"
+$b.GetType().FullName 
+
+$a="Ten"
+$a
+$b="Ten"
+
+#There's a difference between the two approaches. The first approach simply changes the value to the Double type. The second approach strongly types the variable, which means you can assign only values with the same data type to that variable.
+
+$MyString = " PowerShell "
+$MyDouble = 2.0
+$outstring = $MyString + $MyDouble
+write-output $outstring
+#now try
+$outstring = $MyDouble + $MyString
+
+#Control the data type assigned to an array
+$c = [double[]] ("1","2","3")
+$c.GetType().FullName 
+
+[double[]] $d = ("1","2","3") 
+$d.GetType().FullName
+
+#This assigns the Double[] type to the $c array, overriding the default Object[] type.
+
+#Unlike scalar values, arrays are strongly typed by both approaches.
+$c[2] = "ten" 
+$d[2] = "ten" 
+
+#There might be times when you need to convert an existing variable's data type
+
+$e = Get-Date
+$e.GetType().FullName
+$e = [string] $e  
+$e.GetType().FullName 
+
+$f = [double[]] ("1","2","3")
+$f.GetType().FullName 
+$f = [string] $f 
+$f.GetType().FullName 
+
+
+
+
