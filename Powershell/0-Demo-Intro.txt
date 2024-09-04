@@ -1,0 +1,17 @@
+#Enter the commands you want to show case
+notepad
+dir
+ls
+pushd
+cd \
+popd
+pwd
+man
+gci
+GCI
+Get-ChildItem
+
+
+.\Get-GuiInput.ps1
+.\Start-ProcessMonitor.ps1
+.\Show-ColorizedContent.ps1 Demo-ComScripting.ps1

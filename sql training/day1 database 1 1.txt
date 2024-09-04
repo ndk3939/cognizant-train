@@ -1,0 +1,263 @@
+After installing oracle 11g
+
+if login from command prompt
+>sqlplus
+
+connect system
+password:admin
+
+alter user hr account unlock;
+alter user hr identified by hr;
+
+connect hr
+password:hr
+sql>
+or
+connect hr/hr
+....................................................................
+forgot username password
+
+open command prompt
+sqlplus "/ as sysdba"
+show user;
+
+or
+sqlplus
+(open run sql command prompt)
+connect as sysdba
+username:sys
+password:admin
+
+(reset system username password)
+..........................................................................
+
+Change password system user
+
+ALTER USER SYSTEM IDENTIFIED BY admin;
+
+connect system/admin
+.........................................................................
+connect system/admin
+ALTER USER cts IDENTIFIED BY cts;
+
+connect cts/cts
+......................................................................
+win+r(run) ---- cmd
+open command prompt
+sqlplus
+username:cloud
+password:cloud
+sql>
+sql>quit
+
+or
+
+sqlplus  cts/cts
+sql>show user;
+Display current user name
+.................................................................
+Displaying the Table Structure
+Use the DESCRIBE command to display the structure of a table.
+DESCRIBE, shortcut command desc
+sql>desc emp;
+sql>select * from emp;
+sql>set line 100;
+sql> select * from emp;
+.....................................................................
+create table test(sno number(7,2));
+desc test;
+insert into test values (12345.67);
+select * from test;
+insert into test values (123458.67);
+select * from test;
+insert into test values (12345.6789);
+select * from test;
+insert into test values (123);
+select * from test;
+
+...................................................................
+create table first(sno number(10), name varchar2(10));
+desc first
+...................................................................
+alter table first add sal number(10);
+desc first;
+..........................................................................
+alter table first modify sno date;
+desc first
+or
+alter table first modify sno number(12);
+desc first
+..................................................................
+alter table first drop column sal;
+desc first
+delete multiple colume at time, then
+alter table first drop(sal);
+desc first
+...............................................................
+drop table first;
+desc first;
+select original_name from recyclebin;
+purge table first;
+select original_name from recyclebin;
+desc first;
+To Drop all tables from Recycle bin:
+purge recyclebin;
+...................................................................
+ create table first(sno number(10), name varchar2(10),sal number(5));
+desc first
+insert into first values (1001,'aravinda',30000);
+insert into first values (1002,'kumar',20000);
+insert into first values (1003,'raji',10000);
+select * from first;
+truncate table first;
+select * from first;
+desc first
+........................................................................
+rename first to last;
+desc first
+desc last
+......................................................................
+
+ALTER USER admin IDENTIFIED BY admin
+GRANT DBA TO admin;
+
+SELECT * FROM dba_role_privs;
+
+SELECT owner, table_name FROM all_tables;
+................................................................
+create a new table
+CREATE TABLE EMPL (EMPNO NUMBER(4), ENAME VARCHAR2(10), DESIGNATIN VARCHAR2(10), SALARY NUMBER(8,2));
+
+DESC EMPL;
+..................................................................
+Write a query for create a from an existing table with all the fields(including records)
+
+CREATE TABLE EMP1 AS SELECT * FROM EMP;
+
+DESC EMP1;
+SELECT * FROM EMP1;
+................................................................
+Write a query for create a from an existing table with selected fields
+
+CREATE TABLE EMP2 AS SELECT EMPNO, ENAME FROM EMP;
+
+DESC EMP2;
+SELECT * FROM EMP2;
+.................................................................
+Write a query for create a new table from an existing table without any record:
+
+CREATE TABLE EMP3 AS SELECT * FROM EMP WHERE 1>34;
+
+DESC EMP3;
+SELECT * FROM EMP3;
+
+OR
+
+CREATE TABLE EMP3A AS SELECT * FROM EMP;
+DESC EMP3A;
+SELECT * FROM EMP3A;
+TRUNCATE TABLE EMP3A;
+DESC EMP3A;
+SELECT * FROM EMP3A;
+................................................................
+Write a Query to Alter the column EMPNO NUMBER (4) TO EMPNO NUMBER (6).
+
+DESC EMPL;
+ALTER TABLE EMPL MODIFY EMPNO NUMBER(6);
+
+DESC EMPL;
+.................................................................
+Write a Query to Alter the table employee with multiple columns (EMPNO, ENAME.)
+DESC EMPL;
+ALTER TABLE EMPL MODIFY (EMPNO NUMBER(7), ENAME VARCHAR2(12));
+
+DESC EMPL;
+..................................................................
+Write a query to add a new column in to employee
+DESC EMPL;
+ALTER TABLE EMPL ADD QUALIFICATION VARCHAR2(6);
+
+DESC EMPL;
+..................................................................
+Write a query to add multiple columns in to employee
+DESC EMPL;
+ALTER TABLE EMPL ADD (DOB DATE, DOJ DATE);
+
+DESC EMPL;
+.....................................................................
+Write a query to drop a column from an existing table employee
+DESC EMPL;
+ALTER TABLE EMPL DROP COLUMN DOJ;
+
+DESC EMPL;
+......................................................................
+Write a query to drop multiple columns from employee
+DESC EMPL;
+ALTER TABLE EMPL DROP (DOB, QUALIFICATION);
+
+DESC EMPL;
+......................................................................
+Write a query to rename table EMPL to EMPLOYEE
+
+ALTER TABLE EMPL RENAME TO EMPLOYEE;
+
+DESC EMPL;
+DESC EMPLOYEE;
+........................................................................
+Write a query to rename table  EMPLOYEE to EMPL
+
+ALTER TABLE EMPLOYEE RENAME TO EMPL;
+
+DESC EMPL;
+DESC EMPLOYEE;
+............................................................
+Insert: It is used to insert data into a table.
+
+create table first(sno number(10), name varchar(20));
+insert into first values(1, 'abc');
+insert into first values(2, 'sachin');
+select * from first;
+............................................................
+insert into first values(&sno, '&name');
+Enter value for sno: 3
+Enter value for name: xyz
+SQL> /
+Enter value for sno: 4
+Enter value for name: sachin
+SQL> /
+Enter value for sno: 5
+Enter value for name: aravinda
+SQL> select * from first;
+.................................................................
+insert into first values(7, 'mohan');
+select * from first;
+insert into first(name)values('www');
+select * from first;
+insert into first(sno)values(8);
+select * from first;
+insert into first(name,sno)values('swathi',10);
+select * from first;
+....................................................................
+Update: It is used to change data within a table.
+
+select * from first;
+alter table first add address varchar2(10);
+update first set address='mumbai' where name='sachin';
+select * from first;
+update first set address='mumbai' where sno=4;
+select * from first;
+
+..................................................................
+Delete: It is used to delete particular rows or all rows from a table; 
+Syntax:
+è Delete from tablename;
+è Delete from tablename where condition; 
+First command is to delete all rows
+Second command is to delete particular rows.
+example:-
+select * from first;
+delete from first;
+select * from first;
+rollback;
+select * from first;
+......................................................................

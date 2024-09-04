@@ -1,0 +1,33 @@
+#Enter the commands you want to show case
+Get-Service | Get-Member
+Get-Command -ParameterType System.ServiceProcess.ServiceController
+#Notice that there is a cmdlet called Stop-Service; let’s take a look at the help for it.
+
+Get-Help –Name Stop-Service
+#It looks like the InputObject parameter takes an array of ServiceController objects as input
+Get-Help -Name Stop-Service –Full
+
+Get-Service -Name ‘Apple Mobile Device’ | Stop-Service
+
+Get-WmiObject Win32_processor | Get-Member
+
+$Directory = Get-ChildItem -Directory 
+$Directory | Get-Member
+$Directory | Get-Member -MemberType Method
+$Directory | Get-Member -View Extended 
+$Directory | Get-Member -Force
+
+[System.Collections.ArrayList]$List  = 1,5,3243323432443,'moretest','test'
+$List | Get-Member 
+
+#Get-Member examples
+Get-ChildItem C:\ | Get-Member
+Get-ChildItem | Get-Member -membertype property
+Get-ChildItem | Get-Member -membertype method
+
+$a=Get-ChildItem D:\Training\ps\testscripts\uptimereport.txt
+$a.get_lastAccessTime()
+$a.gettype()
+$a.MoveTo("d:\uptimereport.txt")
+$a.name.ToUpper()
+
