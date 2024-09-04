@@ -1,0 +1,24 @@
+#Enter the commands you want to show case
+
+$list = @{Name = "PC01"; IP="10.10.10.10"; User=" Rohit A"}
+$list["IP"] 
+$list["Name", "IP"]
+$list.IP 
+$list.keys
+
+$info = @{}
+#look at this eg first
+Get-ADComputer -filter * | Select -expandproperty Name
+#Lets get back
+$info.BIOSVersion = Get-WmiObject Win32_BIOS | Select-Object -ExpandProperty Version
+$info.OperatingSystemVersion = Get-WmiObject win32_OperatingSystem | Select-Object -ExpandProperty Version
+$info.PowerShellVersion = $PSVersionTable.psversion.ToString()
+New-Object PSObject -property $info
+
+#You can just define a hash table with the formatting information and pass it on to Format-Table:
+
+$column1 = @{expression="Name"; width=30; label="filename"; alignment="left"}
+$column2 = @{expression="LastWriteTime"; width=40; label="last modification"; alignment="right"}
+$column1
+$column2
+Dir | Format-Table $column1, $column2

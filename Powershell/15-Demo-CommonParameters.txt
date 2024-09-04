@@ -1,0 +1,19 @@
+#Enter the commands you want to show case
+
+get-content profile.ps1
+get-content profile.ps1 ; dir
+get-content profile.notexist ; dir
+get-content profile.notexist -erroraction continue ; dir
+get-content profile.notexist -erroraction stop ; dir
+get-content profile.notexist -erroraction inquire ; dir
+get-content profile.notexist -erroraction silentlycontinue ; dir
+$error.gettype()
+$error.count
+$error[0]
+get-content profile.notexist -errorvariable myerrvar
+$error
+$myerrvar
+get-process -name "*ss" -outvariable myoutvar
+$myoutvar
+stop-process -name "*ss" -whatif
+stop-process -name "*ss" -confirm

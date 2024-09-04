@@ -1,0 +1,27 @@
+#Enter the commands you want to show case
+# Define test function:
+Function test { "variable = $a"; $a = 1000 }
+
+# Create variable in console scope and call test function:
+$a = 12
+Test
+
+# After calling test function, control modifications in console scope:
+$a
+
+# Define test function:
+Function test { "variable = $a"; $a = 1000 }
+
+# Create variable in console scope and call test function:
+$private:a = 12
+Test 
+
+# Check variable for modifications after calling test function in console scope:
+$a
+
+Set-Alias Run-Test Get-Date
+Run-Test
+
+function t1 { Run-Test}
+function t2 { Set-Alias Run-Test Get-Location; t1 }
+t2

@@ -1,0 +1,14 @@
+#Enter the commands you want to show case
+
+$dailyTrigger = New-JobTrigger -Daily -At "2:00 PM"
+$trigger = New-JobTrigger -Once -At 13:45
+
+$option = New-ScheduledJobOption -StartIfOnBattery –StartIfIdle
+
+Register-ScheduledJob -Name UpdateHelp -ScriptBlock {Update-Help -Module * -Force} -Trigger $dailyTrigger -ScheduledJobOption $option
+
+Get-ScheduledJob -Id 1
+Get-ScheduledJobOption -Id 1
+Get-ScheduledJob -Id 1 | Get-JobTrigger
+
+Taskschd.msc
