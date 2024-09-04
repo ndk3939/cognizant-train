@@ -1,0 +1,30 @@
+#Enter the commands you want to show case
+
+Get-ChildItem D:\ | Format-Table
+Get-ChildItem D:\Training –ea 0
+Get-ChildItem D:\Training -recurse -include *.txt -ea 0
+Get-ChildItem D:\Training -recurse -include *.txt –ea 0 | Format-Table
+#Use the -property argument of the Format-Table cmdlet and choose the name, length, and last-write-time properties. This is shown here:
+Get-ChildItem D:\Training -recurse -include *.txt –ea 0 |Format-Table -property name, length, lastwritetime
+
+#With Out-GridView
+get-process | Out-GridView
+Get-Process | Sort-Object cpu -Descending | Out-GridView
+
+Get-EventLog Security -newest 100
+#Group-Object
+#Format output information based on groups
+Get-Process | Group-Object Company
+Get-EventLog System | Group-Object eventid
+#Note: The Name column is the Event ID, even though it’s not labeled as such. By default, “Group-Object” places the property you specify in the “Name” column
+Sort-Object
+Get-EventLog System | Group-Object eventid | Sort-Object Count –descending
+Get-EventLog System | select entrytype| group-object entrytype 
+#Convertto-HTML
+Get-Process | ConvertTo-html | out-file “Processes.html”
+Invoke-Item Processes.html
+
+#Export-CSV
+Get-Process | Export-CSV Processes.csv
+Invoke-Item Processes.csv
+

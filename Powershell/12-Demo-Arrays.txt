@@ -1,0 +1,74 @@
+#Enter the commands you want to show case
+
+$a = "Hello"
+$a -is [Array] 
+$a = ipconfig
+$a -is [Array]
+$a.Count 
+$result = Dir
+$result -is [array]
+$result = Dir D:\temp.jpg
+$result -is [array] 
+$result = @(Dir $env:windir -ea 0)
+$result.Count
+#or
+$result = @(Dir $env:windir -ea 0).Count
+
+$path = "c:\folder\subfolder\file.txt"
+$array = $path.Split('\')
+$array
+$array[-1]
+$path.Split('.')[-1]
+$array += "New Value"
+
+#To create an array of a specific type, use a strongly typed collection:
+$list = New-Object Collections.Generic.List[Int]
+$list.Add(10)
+$list.Add("Hello")
+
+$strComputers = @(“Server1", “Server2", “Server3")
+
+#list the values in the array:
+$strComputers
+#List the number of items within the array using the count property.
+$strComputers.Count
+$strcomputers.length
+$strcomputers[0].toupper()
+$strcomputers[0].tolower()
+$strcomputers[0].replace('1','2008')
+#List values by their index number:
+$strComputers[0]
+$strComputers[1]
+$strComputers[2]
+#modify elements in an array
+$strComputers[2] = “Server4"
+$strComputers
+
+#To access each item in an array one by one, use the Foreach-Object cmdlet:
+$strcomputers = $strcomputers | ForEach-Object { $_.ToLower() }
+
+ $myArray = 1,2,3
+ $sum = 0
+ $myArray | Foreach-Object { $sum += $_ }
+ $sum
+
+#Remove item from array
+$array = @("one", "two", "three", "four")
+$array = $array |? {$_ -ne "three"}
+$array
+
+
+
+[int[]]$array = 1,2,3
+
+#arraylist
+$array = 1..10
+$superarray = [System.Collections.ArrayList]$array
+$superarray.Add(11) | Out-Null
+$superarray.RemoveAt(3)
+$superarray.Insert(2,100)
+$superarray
+$superarray.Sort()
+$superarray
+$superarray.Reverse()
+$superarray

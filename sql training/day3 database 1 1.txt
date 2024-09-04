@@ -1,0 +1,236 @@
+
+TCL(TRNSACTION CONTROL LANGUAGE)
+
+DESC EMPL;
+
+INSERT INTO EMPL VALUES(101,'NAGARAJAN','LECTURER',15000);
+
+SELECT * FROM EMPL;
+
+
+INSERT INTO EMPL VALUES(&EMPNO,'&ENAME','&DESIGNATIN','&SALARY');
+
+REF PAGE NO 22
+
+INSERT INTO EMPL VALUES(102,'SARAVANAN','LECTURER','15000');
+
+INSERT INTO EMPL VALUES(103,'PANNERSELVAM','ASST. PROF','20000');
+
+INSERT INTO EMPL VALUES(104,'CHINNI','HOD, PROF','45000');
+
+
+SELECT * FROM EMPL;
+
+
+UPDATE EMPL SET SALARY=16000 WHERE EMPNO=101;
+
+ SELECT * FROM EMPL;
+
+UPDATE EMPL SET SALARY=16000, DESIGNATIN='ASST. PROF' WHERE EMPNO=102;
+
+SELECT * FROM EMPL;
+
+DELETE EMPL WHERE EMPNO=103;
+
+ SELECT * FROM EMPL;
+
+.......................................................................
+Commit;
+
+DESC EMPL;
+
+INSERT INTO EMPL VALUES(105,'MOHAN','STUDENT',300);
+
+INSERT INTO EMPL VALUES(106,'KIRAN','CLERK',5000);
+
+SELECT * FROM EMPL;
+
+COMMIT;
+
+INSERT INTO EMPL VALUES(107,'RAJU','STUDENT',0);
+
+INSERT INTO EMPL VALUES(108,'SAI','STUDENT',100);
+
+ROLLBACK;
+
+SELECT * FROM EMPL;
+
+DELETE FROM EMPL WHERE EMPNO = 102;
+
+SELECT * FROM EMPL;
+
+ROLLBACK;
+
+SELECT * FROM EMPL;
+
+
+UPDATE EMPL SET SALARY=32000 WHERE EMPNO=101;
+
+SELECT * FROM EMPL;
+
+ROLLBACK;
+
+SELECT * FROM EMPL;
+
+INSERT INTO EMPL VALUES(107,'RAJU','STUDENT',0);
+
+INSERT INTO EMPL VALUES(108,'SAI','STUDENT',100);
+
+SELECT * FROM EMPL;
+
+SAVEPOINT S1;
+
+INSERT INTO EMPL VALUES(109,'KUMAR','STUDENT',0);
+
+INSERT INTO EMPL VALUES(110,'LAKSHMI','STUDENT',0);
+
+SAVEPOINT S2;
+
+SELECT * FROM EMPL;
+
+INSERT INTO EMPL VALUES(111,'SWATHI','STUDENT',0);
+
+SELECT * FROM EMPL;
+
+SAVEPOINT S3;
+
+ROLLBACK TO S2;
+
+SELECT * FROM EMPL;
+
+ROLLBACK TO S1;
+
+SELECT * FROM EMPL;
+
+........................................................................
+
+
+
+CREATE TABLE T1(SN NUMBER,NAME VARCHAR2(12));
+
+DESC T1;
+
+DROP TABLE T1;
+
+DESC RECYCLEBIN;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+PURGE TABLE T1;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+CREATE TABLE T1(SN NUMBER,NAME VARCHAR2(12));
+
+CREATE TABLE T2(SN NUMBER,NAME VARCHAR2(12));
+
+CREATE TABLE T3(SN NUMBER,NAME VARCHAR2(12));
+
+DROP TABLE T1;
+
+DROP TABLE T2;
+
+DROP TABLE T3;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+PURGE RECYCLEBIN;   (delte all object from the recycle bin)
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+......................................................................
+
+CREATE TABLE T2(SN NUMBER,NAME VARCHAR2(12));
+
+DESC T2;
+
+DROP TABLE T2;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+FLASHBACK TABLE T2 TO BEFORE DROP;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+DESC T2;
+.........................................................................
+
+
+CREATE TABLE T3(SN NUMBER,NAME VARCHAR2(12));
+
+DESC T3;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+
+DROP TABLE T3  PURGE;
+
+SELECT ORIGINAL_NAME FROM RECYCLEBIN;
+.........................................................................
+DCL (DATA CONTROL LANGUAGE)
+
+creating new user account
+
+
+CONNECT SYSTEM/admin;
+
+CREATE USER CSE2 IDENTIFIED BY CSECSE;
+
+CONNECT CSE2/CSECSE;
+
+CONNECT SYSTEM/admin;
+
+GRANT DBA TO CSE2;
+
+CONNECT CSE2/CSECSE;
+
+REVOKE DBA FROM CSE2;
+
+CONNECT CSE2/CSECSE;
+
+CONNECT cloud/cloud;
+
+......................................................................
+
+function
+
+
+select 50+90 from DUAL;
+
+select abs(-50) from dual;
+
+ select mod(5,2) from dual;
+
+select round(1.7) from dual;
+
+select round(12.234567,3) from dual;
+
+select round(1376.234567,-1) from dual;
+
+select trunc(1.8) from dual;
+
+select trunc(123.3456,2) from dual;
+
+select greatest(12,23,54,2,67,19) from dual;
+
+select least(12,23,54,2,67,19) from dual;
+
+select ceil(1.8) from dual;
+
+select floor(1.8) from dual;
+
+select upper('abcde') from dual;
+
+select lower('ABCDE') from dual;
+
+select initcap('ABCDE') from dual;
+
+select length('ABCDE') from dual;
+
+select substr('ABCDEFGH',4) from dual;
+
+select substr('ABCDEFGH',4,3) from dual;
+
+SELECT * FROM EMP WHERE SUBSTR(ENAME,2,2) = 'AR';
+
+select instr('ABCDEFGH','D') from dual;
+
+.................................................................................

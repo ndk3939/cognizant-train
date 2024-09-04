@@ -1,0 +1,53 @@
+#Enter the commands you want to show case
+Get-WinEvent -LogName system
+Get-WinEvent -LogName application -MaxEvents 1
+get-help Get-WinEvent
+Get-WinEvent -FilterHashtable @{logname='application'; id=8198}
+Get-WinEvent -FilterHashtable @{logname='application'; id=8198; StartTime=(Get-Date).date}
+Get-WinEvent -FilterHashtable @{logname='application';id=4107;StartTime="6/01/15";EndTime="1/27/15"}
+
+Get-Eventlog system -Newest 20 | Where-Object {$_.entryType -Match "Error"}
+$SysEvent = Get-Eventlog -Logname system -Newest 20 
+$SysError = $SysEvent | Where {$_.entryType -Match "Error"}
+$SysError | Sort-Object EventID | Format-Table EventID, Source, TimeWritten, Message -auto
+
+#Select-Object cmdlet may be used to select specific event properties, and rename them as desired
+$events = Get-WinEvent -FilterHashTable @{LogName='System'; Level=2; StartTime=(Get-Date).AddDays(-30)}
+$events | Select-Object @{Name='Time';Expression={$_.'TimeCreated'}},  @{Name="Source";Expression={$_.'ProviderName'}}, @{Name="Event";Expression={$_.'Id'}}
+
+#Converting filter into XML query
+$query = @"
+<QueryList>
+  <Query Id="0" Path="Application">
+    <Select Path="Application">*[System[Provider[@Name='Application Hang']
+    and (Level=2) and (EventID=1002)]]
+    and *[EventData[Data='lync.exe']]</Select>
+  </Query>
+</QueryList>
+"@
+
+Get-WinEvent -FilterXml $query 
+
+#without XML
+Get-WinEvent -LogName application | where { $_.providername -eq 'application hang' -and $_.level -eq 2 -and $_.ID -eq 1002 -and $_.message -match 'lync.exe'}
+
+Measure-Command {Get-WinEvent -FilterXml $query }
+Measure-Command {Get-WinEvent -LogName application | where { $_.providername -eq 'application hang' -and $_.level -eq 2 -and $_.ID -eq 1002 -and $_.message -match 'lync.exe'}}
+
+# New-EventLog cmdlet creates a new classic event log on a local or remote computer. It can also register an event source that writes to the new log or to an existing log.
+
+New-EventLog -LogName 'PowerShell Scripts' -Source 'My Script'
+#Write-EventLog cmdlet writes an event to an event log
+
+$message = 'Event log entry created by PowerShell script.'
+Write-EventLog -LogName 'PowerShell Scripts' -Source 'My Script' -EntryType Information -EventId '1' -Category 0 -Message $message
+
+#Grouping
+Get-EventLog –LogName System | Group-Object –Property EventID | Sort-Object –Property Count -Descending
+
+#multiple logs
+"System","application" | foreach { Get-EventLog -LogName $_ -EntryType "Error" } 
+Get-CimInstance -ClassName Win32_NTLogEvent -Filter 'Type="Error" AND (LogFile="System" OR LogFile="Application")' | Select -First 100 -Property TimeGenerated, Logfile, EventCode, Message
+
+#Remote event logs
+Invoke-Command -ComputerName localhost,comp1 -ScriptBlock { Get-EventLog -LogName Security -Newest 1 | Select-Object -Property PSComputerName, TimeGenerated, EventID }

@@ -1,0 +1,60 @@
+ms-dos 1.0  	16 bit OS
+ms-dos 2.0		command.com
+ms-dos 3.0		io.sys
+ms-dos 4.0		msdos.sys
+ms-dos 5.0 ............ windows 1.0
+ms-dos 6.0		windows 2.0
+ms-dos 6.22		windows 3.0
+			windows NT 3.1
+			windows 3.11
+	windows NT 3.5	windows NT 3.51
+ms-dos 6.22 + windows 3.11 = ms-dos 7.0
+rename 
+windows 95 (1995) GUI 100% 16 bit OS start menu
+windows 95 OSR2 GUI 32 bit os
+windows NT 4.0 (windows 95 + win NT 3.51)
+windows 98 (1998)
+windows 2000 (2000) AD, prof and server(NT 5.0)
+windows ME  (2000) windows 98 update
+windows XP (2001) windows ME + win 2000 prof
+xp home and prof  (NT 5.1)
+windows server 2003 (windows 2000 server + XP)
+windows server 2003 R2 (64 bit)
+NTLDR,NTDEtect.com,boot.ini  (NT 5.2)
+windows vista (2006)  (NT 6.0) bootmgr
+windows server 2008  (windows 2003 + vista )
+windows server 2008 R2 (64 bit)
+windows 7 (windows vista) 2009
+windows 2008 +win 7 = windows server 2012
+windows server 2012 R2 (64 bit)
+windows 8 (2014)
+windows 8.1 (2014/15) 
+windows 10   (2015)
+ feature     CU
+1507
+1603
+1609
+1703
+1709
+1803
+1809
+1903
+1909
+2004
+20H2
+21H1
+21H2
+22H1
+22H2
+23H1
+23H2
+24H2
+WINDOWS SERVER 2016 (windows 8.1 + win server 2012 R2)
+windows server 2019  (windows 10 + win ser 2016)
+windows 11  (2021)
+windows server 2022  (2021)
+windows  12  (coming soon)
+windows server 2025  (coming soon)
+
+ 
+

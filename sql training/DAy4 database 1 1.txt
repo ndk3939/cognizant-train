@@ -1,0 +1,138 @@
+
+
+select lpad('ABCD',10,'*') from dual;
+
+select lpad('ABCD',10) from dual;
+
+select rpad('ABCD',10,'*') from dual;
+
+select rpad('ABCD',10) from dual;
+
+select ltrim('ABCDEFBAHA','A') from dual;
+
+select job, ltrim(JOB,'CSM') from emp;
+
+select Rtrim('ABCDEFBAHA','A') from dual;
+
+select trim('A' FROM 'AGYTABCDEFBAHAHA') from dual;
+
+ select translate('ABCD','C','S') from dual;
+
+ select REPLACE('ABCD','C','S') from dual;
+
+select translate('ABCD','C','SASD') from dual;
+
+ select REPLACE('ABCD','C','SASD') from dual;
+
+select sysdate from dual;
+
+select add_months(sysdate,1) from dual;
+
+select add_months(sysdate,-2) from dual;
+
+select next_day(sysdate,'sunday') from dual;
+
+select last_day(sysdate) from dual;
+
+select months_between('31-may-22',sysdate) from dual;
+
+select to_char(sysdate,'dd/mm/yyyy') from dual;
+
+select to_char(sysdate,'d') from dual;
+
+select to_char(sysdate,'dy') from dual;
+
+tue
+
+select to_char(sysdate,'day') from dual;
+
+select to_date('12/april/2022') from dual;
+
+select to_date('12/04/22','dd/mm/yy') from dual;
+
+.........................................................................
+
+ select max(sal) from  emp;
+
+select min(sal) from  emp;
+
+select max(ename) from  emp;
+
+select avg(sal) from  emp;
+
+select sum(sal) from  emp;
+
+select count(*) from  emp;
+
+ select count(comm) from  emp;     
+
+ select count(nvl(comm,0)) from  emp;
+
+select deptno,count(*) from emp group by deptno;
+
+select JOB,count(*) from emp group by JOB;
+
+select deptno,MAX(SAL) MAXIMUMSAL,MIN(SAL) MINIMUMSAL from emp group by deptno;
+
+select deptno,count(*) "totalemp" from emp group by deptno;
+
+select job,count(*) "post" from emp group by job;
+
+select deptno,max(sal),min(sal) from emp group by deptno;
+
+select deptno,sum(sal),job from emp group by deptno,job;
+
+select deptno,count(*) from emp group by deptno where count(*)>4;
+
+select deptno,count(*) from emp group by deptno having count(*)>4;
+
+select ename,sal from emp order by sal;
+
+select ename,sal from emp order by sal desc;
+
+select deptno,job,sum(sal) from emp group by rollup(deptno,job);
+
+select deptno,job,sum(sal) from emp group by cube(deptno,job);
+.........................................................................
+
+
+JOINS
+.........................................................................
+ cross join 
+
+SELECT ENAME,SAL,DNAME,LOC FROM EMP,DEPT;
+
+.........................................................................
+
+Joins
+
+CREATE table orders(O_Id number(5), Orderno number(5),P_Id number(3));
+
+DESC ORDERS;
+
+INSERT into orders values(1,77895,3);
+INSERT into orders values(2,44678,3);
+INSERT into orders values(3,22456,1);
+INSERT into orders values(4,24562,1);
+INSERT into orders values(5,34764,15);
+
+SELECT * FROM ORDERS;
+
+CREATE table persons(p_Id number(5),
+LASTNAME varchar2(10),Firstname varchar2(15), Address varchar2(20), city varchar2(10));
+
+DESC PERSONS;
+
+INSERT into persons values(1,'Hansen','Ola','Timoteivn 10','sadnes');
+INSERT into persons values(2,'Svendson','Tove','Borgn 23','Sandnes');
+INSERT into persons values(3,'Pettersen','Kari','Storgt 20','Stavanger');
+
+SELECT * FROM persons;
+
+SELECT persons.lastname,persons.firstname,orders.orderno FROM persons LEFT JOIN orders ON persons.p_Id = orders.p_Id ORDER BY persons.lastname;
+
+SELECT persons.lastname,persons.firstname,orders.orderno FROM persons RIGHT OUTER JOIN orders ON persons.p_Id = orders.p_Id ORDER BY persons.lastname;
+
+SELECT persons.lastname,persons.firstname,orders.orderno FROM persons FULL OUTER JOIN orders ON persons.p_Id = orders.p_Id ORDER BY persons.lastname;
+
+SELECT persons.lastname,persons.firstname,orders.orderno FROM persons INNER JOIN orders ON persons.p_Id = orders.p_Id ORDER BY persons.lastname;

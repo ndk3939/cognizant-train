@@ -1,0 +1,7 @@
+ip link -lists all available network interfaces on your system
+ip - to view device and address information
+ping command tests connectivity.
+ip route-routing info
+tracepath ,traceroute
+nmcli connection add con-name name- to add network connections
+nmcli con show-List all connections

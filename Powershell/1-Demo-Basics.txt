@@ -1,0 +1,50 @@
+#Enter the commands you want to show case
+
+
+ipconfig /all
+get-command *process*
+get-process
+get-process | where { $_.name -like "*ss" }
+get-process|gm
+get-service
+get-service | where { $_.status -eq "Stopped" }
+
+
+Help > help.txt
+.\help.txt
+Get-Verb
+(Get-Verb | Measure-Object).count
+(Get-verb).count
+Get-Process | measure VirtualMemorySize -Sum
+
+dir C:\Training\ps\testscripts -File -Recurse | measure Length -Sum -Average -Minimum –Maximum
+
+dir C:\Training\ps\testscripts -Filter *.ps1 -Recurse |  measure Length -Sum | select Count,Sum,Property
+
+(dir $env:temp -Recurse -File | measure Length -sum).sum/1mb
+
+Get-Content C:\Training\ps\testscripts\servers.txt | measure -Character -Word -Line
+
+dir C:\Training\ps\testscripts -File | sort Length -Descending | select -First 10 | measure Length -Sum
+
+dir C:\Training\ps\testscripts -File | sort Length -Descending | select -First 10 | measure Length -Sum | Select -ExpandProperty Sum
+
+.\MeasureFilesSize.ps1
+
+
+help get-command
+get-command help
+dir function:help
+type function:help
+man
+type function:man
+get-command
+get-command -type function
+(get-command).count
+(get-command -type function).count
+# get-command -type all
+(get-command -type all).count
+(get-command *).count
+
+
+
