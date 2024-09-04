@@ -1,0 +1,6 @@
+#Enter the commands you want to show case
+Get-WmiObject Win32_BIOS
+Get-WmiObject Win32_BIOS -ComputerName "WIN-5P5N4OPUNG9.naren.local"
+Get-WmiObject Win32_BIOS -ComputerName "WIN-F3NUET6NHPE.naren.local"
+
+

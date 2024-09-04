@@ -1,0 +1,8 @@
+-->systemd utility provides a method for activating system resources, server daemons, and other processes, both at boot time and on a running system.
+-->systemctl utility to start, stop, reload, enable, and disable services.
+-->systemd utility to manage service units, socket units, and path units.
+-->systemctl list-dependencies
+
+is-enabled
+is-active
+is-disabled

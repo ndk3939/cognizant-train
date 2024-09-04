@@ -1,0 +1,50 @@
+#Enter the commands you want to show case
+
+#Get-ChildItem -Path c:\ -Recurse
+Start-Job -ScriptBlock {Get-ChildItem -Path c:\ -Recurse}
+Get-Job -Id 2
+#Besides using a job's ID to retrieve information about a job, you can use the job's name
+Get-Job -Name Job2
+Get-Job Job3 | Select Name,State
+
+#want to assign a more meaningful name to your job. 
+Start-Job { dir $env:TEMP -Recurse -File } -Name TempDir
+
+#to view child job info
+Get-Job -Name Job2 -IncludeChildJob
+#view job results later on
+Receive-Job -Id 2 
+Receive-Job -Id 2 -keep
+#HasMoreData
+
+#Using the Get-WMIObject Cmdlet to Create Background Jobs
+Get-WmiObject Win32_Product -comp localhost,novo8,chi-win8-01,chi-dc04 -AsJob
+#In this case, the WMI job (job 9) failed. To find out what went wrong, you can check the child jobs:
+
+Get-Job 9 -IncludeChildJob
+
+#Using the Invoke-Command Cmdlet to Create Background Jobs
+Invoke-Command { gwmi win32_logicaldisk -filter "drivetype=3"} -comp chi-dc01,chi-dc02,chi-dc04 -AsJob
+
+$myjob = Start-Job -ScriptBlock {Get-ChildItem }
+Receive-Job -Job $myjob –Keep
+
+$data = Receive-Job TempDir -Keep | measure Length -Sum
+$data.sum/1mb
+
+$PSDefaultParameterValues.Add("Receive-job:Keep",$True)
+#If you run this command, PowerShell will automatically set the -Keep parameter to $True in the current session. If you want this behavior all the time, you need to put this command into your PowerShell profile script.
+
+Invoke-Command {dir c:\ -Recurse } -ComputerName  $computers -AsJob -JobName RemoteDir
+Stop-Job RemoteDir
+
+# want to see the execution time, you need to do a little bit of work:
+
+Get-Job | select PSBeginTime, PSEndTime, @{N='ExecutionTime'; E={$_.PSEndTime - $_.PSBeginTime}}
+
+Get-Job | where State -ne 'Completed'
+
+Get-Job -State Completed | Remove-Job
+Get-Job -State Failed -IncludeChildJob
+$jobs= Get-Job | where State -ne 'Completed'
+$job.ChildJobs[0].JobStateInfo.Reason

@@ -1,0 +1,116 @@
+pwd
+/home/ec2-user
+touch cts
+ls
+touch 1 2 3 4 5
+ls
+dir
+cat > file1
+welcome to redhat training
+^d
+cat file1
+cat >> file1
+cognizant
+^d
+cat file1
+ls
+mkdir apple
+ls
+dir
+ls -l
+ll
+ls -a
+ls -l -a
+ls -la
+ll -a
+man ls
+info ls
+ls --help
+touch ant ball cat dog egg fan hat 
+ls a*
+ls ?a*
+ls ???
+ls ?????
+ls ????  -d
+ls ?g* -d
+mkdir abc
+cd abc
+pwd
+mkdir xyz
+cd xyz
+mkdir pqr
+cd pqr
+pwd
+cat > lab
+redhat lab
+^d
+cat lab
+cd ..
+pwd
+cd ../..
+pwd
+cd abc/xyz/pqr
+pwd
+cd ~
+pwd
+cd abc/xyz/pqr
+cd
+pwd
+mkdir -p aaa/bbb/ccc/ddd/eee/fff
+cd aaa/bbb/ccc/ddd/eee/fff
+pwd
+cd ../../../..
+pwd
+cd
+cd abc/xyz/pqr
+pwd
+cd /home/ec2-user/aaa/bbb/ccc/ddd/eee/fff
+pwd
+cd -
+pwd
+cd -
+pwd
+cd
+ls -R aaa
+ls -R abc
+rm 1
+ls
+rmdir apple
+rmdir abc
+rm -rf abc
+touch test Test TEST tEST teST
+touch "aravinda kumar"
+ll
+cd /
+ls
+fdisk /dev/xvda
+which fdisk
+which rmdir
+type -t fdisk
+type -t pwd
+cat /etc/shadow
+cd
+cat -n file1
+whatis pwd
+whatis ls
+type -t ls
+which ls
+cat > cts
+abcde
+^d
+cat cts
+mv cts  cognizant
+cat cts
+cat cognizant
+mv cognizant aaa
+ls
+
+
+
+
+
+
+
+
+
+
